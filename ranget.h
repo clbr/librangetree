@@ -31,7 +31,7 @@ public:
 		tmparray.reserve(mainreserve);
 	}
 
-	int addPoint(point x, point y, data * const ptr) {
+	int add(point x, point y, data * const ptr) {
 		if (init)
 			return 1;
 
