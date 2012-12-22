@@ -68,8 +68,9 @@ int main() {
 
 	printf("\n\nScaling results:\n");
 	for (i = 1; i <= max; i++) {
-		printf("%u core(s): %u searches/sec\n",
-			i, results[i]);
+		printf("%u core%s: %u searches/sec\n",
+			i, i > 1 ? "s" : "",
+			results[i]);
 	}
 
 	return 0;
