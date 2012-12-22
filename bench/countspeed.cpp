@@ -67,7 +67,7 @@ int main() {
 	printf("n\nProgression:\n");
 	for (i = 1; i < powers; i++) {
 		const float c = (float) results[i][0] / results[i - 1][0];
-		const float s = (float) results[i][0] / results[i - 1][0];
+		const float s = (float) results[i][1] / results[i - 1][1];
 
 		printf("Creationg %.2fx, search %.2fx\n", c, s);
 	}
