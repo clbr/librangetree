@@ -181,7 +181,7 @@ private:
 
 		// Ok, divide it between everyone
 		start.left = build(0, median);
-		start.right = build(median + 1, totalsize);
+		start.right = build(median + 1, start.max);
 	}
 
 	node *build(const u32 min, const u32 max) {
