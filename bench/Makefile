@@ -7,7 +7,7 @@ CPPFLAGS += -I ..
 
 all: $(TARGETS)
 
-$(TARGETS): ../ranget.h
+$(TARGETS): ../ranget.h timing.h
 
 clean:
 	rm -f *.o $(TARGETS)

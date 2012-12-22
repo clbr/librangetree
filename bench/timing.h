@@ -1,9 +1,9 @@
 #ifndef TIMING_H
 #define TIMING_H
 
-#include "ranget.h"
 #include <sys/time.h>
 #include <time.h>
+#include "ranget.h"
 
 class timer {
 
