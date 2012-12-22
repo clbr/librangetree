@@ -31,5 +31,14 @@ int main() {
 	if (res != 3)
 		fail("Count wrong, got %u, expected 1\n", res);
 
+	std::vector<const char *> *joo = tree.search(0,500,2,600);
+	printf("(0,500) (2,600) search got %ld results\n", joo->size());
+	for (u32 i = 0; i < joo->size(); i++) {
+		printf("Node %u name %s\n", i, (*joo)[i]);
+	}
+
+	if (joo->size() != 2)
+		fail("Search count wrong, got %u expected 2\n", joo->size());
+
 	return 0;
 }
