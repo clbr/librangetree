@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
+#include "ranget.h"
+
 static inline void fail(const char fmt[], ...) {
 
 	va_list ap;
