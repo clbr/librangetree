@@ -82,13 +82,20 @@ public:
 
 		u32 sum = 0;
 
-		node * const n = findnode(&start, xmin, xmax);
+		std::vector<const node *> list;
+		findnodes(&start, xmin, xmax, list);
 
-		const u32 max = n->ypoints.size();
-		for (u32 i = 0; i < max; i++) {
-			if (n->ypoints[i].y >= ymin &&
-				n->ypoints[i].y <= ymax)
-				sum++;
+		const u32 ncount = list.size();
+
+		for (u32 k = 0; k < ncount; k++) {
+			const node * const n = list[k];
+			const u32 max = n->ypoints.size();
+
+			for (u32 i = 0; i < max; i++) {
+				if (n->ypoints[i].y >= ymin &&
+					n->ypoints[i].y <= ymax)
+					sum++;
+			}
 		}
 
 		return sum;
@@ -108,15 +115,21 @@ public:
 		std::vector<data *> * const res = new std::vector<data *>;
 		res->reserve(resultreserve);
 
-		node * const n = findnode(&start, xmin, xmax);
+		std::vector<const node *> list;
+		findnodes(&start, xmin, xmax, list);
 
-		const u32 max = n->ypoints.size();
-		for (u32 i = 0; i < max; i++) {
-			if (n->ypoints[i].y >= ymin &&
-				n->ypoints[i].y <= ymax)
-				res->push_back(n->ypoints[i].ptr);
+		const u32 ncount = list.size();
+
+		for (u32 k = 0; k < ncount; k++) {
+			const node * const n = list[k];
+			const u32 max = n->ypoints.size();
+
+			for (u32 i = 0; i < max; i++) {
+				if (n->ypoints[i].y >= ymin &&
+					n->ypoints[i].y <= ymax)
+					res->push_back(n->ypoints[i].ptr);
+			}
 		}
-
 		return res;
 	}
 
@@ -145,11 +158,11 @@ private:
 		node * left;
 		node * right;
 
-		point largestleft;
+		point min, max;
 
 		std::vector<pty> ypoints;
 
-		node(): left(NULL), right(NULL), largestleft(0) {}
+		node(): left(NULL), right(NULL), min(0), max(0) {}
 	};
 
 	void build() {
@@ -160,14 +173,15 @@ private:
 
 		start.ypoints = ytmparray;
 
-		const u32 mediani = totalsize / 2;
-		const point median = xtmparray[mediani].x;
+		const u32 medianidx = totalsize / 2;
+		const point median = xtmparray[medianidx].x;
 
-		start.largestleft = median;
+		start.min = 0;
+		start.max = xtmparray[totalsize - 1].x;
 
 		// Ok, divide it between everyone
-		start.left = build(0, mediani);
-		start.right = build(mediani + 1, totalsize);
+		start.left = build(0, median);
+		start.right = build(median + 1, totalsize);
 	}
 
 	node *build(const u32 min, const u32 max) {
@@ -183,15 +197,15 @@ private:
 			}
 		}
 
+		n->min = min;
+		n->max = max;
+
 		// If no kids, we're done here; otherwise, recurse
 		if (min != max) {
-			const u32 mediani = (min + max) / 2;
-			const point median = xtmparray[mediani].x;
+			const u32 median = (min + max) / 2;
 
-			n->largestleft = median;
-
-			n->left = build(min, mediani);
-			n->right = build(mediani + 1, max);
+			n->left = build(min, median);
+			n->right = build(median + 1, max);
 		}
 
 		return n;
@@ -212,18 +226,18 @@ private:
 		delete n;
 	}
 
-	node *findnode(node * const n, const point xmin, const point xmax) const {
+	void findnodes(node * const n, const point xmin, const point xmax,
+			std::vector<const node *> &list) const {
 		if (!n)
-			return NULL;
+			return;
 
-		if (xmin <= n->largestleft && xmax >= n->largestleft)
-			return n;
+		if (xmin <= n->min && xmax >= n->max) {
+			list.push_back(n);
+			return;
+		}
 
-		node *out = findnode(n->left, xmin, xmax);
-		if (out)
-			return out;
-
-		return findnode(n->right, xmin, xmax);
+		findnodes(n->left, xmin, xmax, list);
+		findnodes(n->right, xmin, xmax, list);
 	}
 
 	void pswap(point &a, point &b) const {
