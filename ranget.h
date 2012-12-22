@@ -226,7 +226,7 @@ private:
 		return findnode(n->right, xmin, xmax);
 	}
 
-	point pswap(point &a, point &b) const {
+	void pswap(point &a, point &b) const {
 		point tmp = a;
 		a = b;
 		b = tmp;
