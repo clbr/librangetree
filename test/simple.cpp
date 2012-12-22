@@ -15,5 +15,21 @@ int main() {
 	if (res != 1)
 		fail("Count wrong, got %u, expected 1\n", res);
 
+	res = tree.count(0, 0, 0, 1);
+	if (res != 0)
+		fail("Count wrong, got %u, expected 1\n", res);
+
+	res = tree.count(0, 800, 0, 1);
+	if (res != 1)
+		fail("Count wrong, got %u, expected 1\n", res);
+
+	res = tree.count(0, 800, 0, 2);
+	if (res != 2)
+		fail("Count wrong, got %u, expected 1\n", res);
+
+	res = tree.count(0, 80, 0, 81);
+	if (res != 3)
+		fail("Count wrong, got %u, expected 1\n", res);
+
 	return 0;
 }
