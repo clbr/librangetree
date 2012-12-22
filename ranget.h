@@ -19,6 +19,8 @@
 #define LIBRANGET
 
 #include "types.h"
+
+#include <stdio.h>
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -100,6 +102,12 @@ private:
 				return false;
 			return true;
 		}
+	};
+	struct node {
+		node * left;
+		node * right;
+
+		std::vector<pty> ypoints;
 	};
 
 
