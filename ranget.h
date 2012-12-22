@@ -74,6 +74,12 @@ public:
 		if (!init)
 			return 0;
 
+		// If needed, swap arguments
+		if (xmax < xmin)
+			pswap(xmax, xmin);
+		if (ymax < ymin)
+			pswap(ymax, ymin);
+
 		u32 sum = 0;
 
 		node * const n = findnode(&start, xmin, xmax);
@@ -92,6 +98,12 @@ public:
 
 		if (!init)
 			return NULL;
+
+		// If needed, swap arguments
+		if (xmax < xmin)
+			pswap(xmax, xmin);
+		if (ymax < ymin)
+			pswap(ymax, ymin);
 
 		std::vector<data *> * const res = new std::vector<data *>;
 		res->reserve(resultreserve);
@@ -212,6 +224,12 @@ private:
 			return out;
 
 		return findnode(n->right, xmin, xmax);
+	}
+
+	point pswap(point &a, point &b) const {
+		point tmp = a;
+		a = b;
+		b = tmp;
 	}
 
 	std::vector<ptx> xtmparray;
