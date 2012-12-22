@@ -7,3 +7,5 @@ test/simple
 test/x-search-before-fin
 test/period
 test/random
+
+bench/countspeed
