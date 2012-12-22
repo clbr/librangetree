@@ -1,7 +1,8 @@
 #include "timing.h"
 
 enum {
-	maxnum = 1000000
+	maxnum = 1000000,
+	powers = 3
 };
 
 static void check(const u32 max, u32 &create, u32 &search) {
@@ -27,34 +28,36 @@ static void check(const u32 max, u32 &create, u32 &search) {
 	search = t.t();
 }
 
-static u32 ipow(u32 what, u32 where) {
+static u32 ipow(const u32 what, u32 where) {
 
 	if (where)
 		where--;
 
+	u32 out = what;
+
 	while (where) {
-		what *= what;
+		out *= what;
 		where--;
 	}
-printf("Pow saying %u\n", what);
-	return what;
+
+	return out;
 }
 
 int main() {
 
 	srand(time(NULL));
 
-	u32 results[4][2];
+	u32 results[powers][2];
 
 	printf("Benchmarking creation and search times...\n");
 
 	u32 i;
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < powers; i++) {
 		const u32 power = ipow(10, i+1);
 		check(power, results[i][0], results[i][1]);
 	}
 
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < powers; i++) {
 		const u32 power = ipow(10, i+1);
 		printf("Using %u points, creation took %u ms\n"
 			"and the same amount of searches took %u ms.\n",
@@ -62,7 +65,7 @@ int main() {
 	}
 
 	printf("n\nProgression:\n");
-	for (i = 1; i < 4; i++) {
+	for (i = 1; i < powers; i++) {
 		const float c = (float) results[i][0] / results[i - 1][0];
 		const float s = (float) results[i][0] / results[i - 1][0];
 
