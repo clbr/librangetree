@@ -1,11 +1,15 @@
 #include "timing.h"
 
+enum {
+	maxnum = 1000000
+};
+
 static void check(const u32 max, u32 &create, u32 &search) {
 	rangetree<u32, u32> tree(max, max);
 
 	for (u32 i = 0; i < max; i++) {
-		u32 x = rand();
-		u32 y = rand();
+		u32 x = rand() % maxnum;
+		u32 y = rand() % maxnum;
 		tree.add(x, y, 0);
 	}
 
