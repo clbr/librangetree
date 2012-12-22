@@ -178,7 +178,7 @@ private:
 
 			n->largestleft = median;
 
-			n->left = build(0, mediani);
+			n->left = build(min, mediani);
 			n->right = build(mediani + 1, max);
 		}
 
