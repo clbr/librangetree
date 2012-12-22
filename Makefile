@@ -3,6 +3,7 @@
 PREFIX ?= /usr
 
 all:
+#	$(CXX) ranget.h
 	$(MAKE) -C test
 
 clean:

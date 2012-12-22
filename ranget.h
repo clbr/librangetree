@@ -44,8 +44,11 @@ public:
 	u32 count(point xmin, point xmax, point ymin, point ymax) {
 	}
 
-	std::vector *search(point xmin, point xmax, point ymin, point ymax) {
+	std::vector<data *> *search(point xmin, point xmax, point ymin, point ymax) {
 		std::vector<data *> * const res = new std::vector<data *>;
+		res->reserve(resultreserve);
+
+		return res;
 	}
 
 private:
