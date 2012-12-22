@@ -60,8 +60,9 @@ int main() {
 	for (i = 0; i < powers; i++) {
 		const u32 power = ipow(10, i+1);
 		printf("Using %u points, creation took %u ms\n"
-			"\tand the same amount of searches took %u ms.\n",
-			power, results[i][0], results[i][1]);
+			"\tand the same amount of searches took %u ms. (%.2f us/search)\n",
+			power, results[i][0], results[i][1],
+			(float) 1000 * results[i][1] / power);
 	}
 
 	printf("\n\nProgression:\n");
