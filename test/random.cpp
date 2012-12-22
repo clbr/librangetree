@@ -14,10 +14,21 @@ static inline u16 smallrand() {
 	return rand() % USHRT_MAX;
 }
 
+static inline void swap(u16 &a, u16 &b) {
+	u16 tmp = a;
+	a = b;
+	b = tmp;
+}
+
 // Linear calculation to check our tree
 static u32 calc(hoo *const arr, u16 xmin, u16 xmax, u16 ymin, u16 ymax) {
 	u32 sum = 0;
 	u32 i;
+
+	if (xmin > xmax)
+		swap(xmin, xmax);
+	if (ymin > ymax)
+		swap(ymin, ymax);
 
 	for (i = 0; i < MAX; i++) {
 		if (arr[i].x >= xmin &&
@@ -56,6 +67,8 @@ int main() {
 		ymin = smallrand();
 		ymax = smallrand();
 
+
+
 		const u32 check = calc(arr, xmin, xmax, ymin, ymax);
 		const u32 count = tree.count(xmin, xmax, ymin, ymax);
 		std::vector<u16 *> *he = tree.search(xmin, xmax, ymin, ymax);
@@ -63,7 +76,8 @@ int main() {
 		delete he;
 
 		if (check != count || check != count2)
-			fail("Expected %u, got %u and %u\n", check, count, count2);
+			fail("%u: Expected %u, got %u and %u\n",
+				i, check, count, count2);
 	}
 
 	return 0;
