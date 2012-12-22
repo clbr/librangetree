@@ -60,6 +60,8 @@ public:
 		std::sort(xtmparray.begin(), xtmparray.end());
 		std::sort(ytmparray.begin(), ytmparray.end());
 
+		totalsize = ytmparray.size();
+
 		build();
 	}
 
@@ -117,21 +119,21 @@ private:
 	};
 
 	void build() {
-		if (xtmparray.size() < 2) {
+		if (totalsize < 2) {
 			// Trees of a single point aren't supported
 			return;
 		}
 
 		start.ypoints = ytmparray;
 
-		const u32 mediani = xtmparray.size() / 2;
+		const u32 mediani = totalsize / 2;
 		const point median = xtmparray[mediani].x;
 
 		start.largestleft = median;
 
 		// Ok, divide it between everyone
 		start.left = build(0, mediani);
-		start.right = build(mediani + 1, xtmparray.size());
+		start.right = build(mediani + 1, totalsize);
 	}
 
 	node *build(const u32 min, const u32 max) {
@@ -139,7 +141,7 @@ private:
 		node * const n = new node;
 
 		u32 i;
-		const u32 ymax = ytmparray.size();
+		const u32 ymax = totalsize;
 		for (i = 0; i < ymax; i++) {
 			if (ytmparray[i].x >= min &&
 				ytmparray[i].y <= max) {
@@ -147,11 +149,19 @@ private:
 			}
 		}
 
+		if (min == max) {
+			
+		} else {
+			const u32 mediani = totalsize / 2;
+			const point median = xtmparray[mediani].x;
+		}
+
 		return n;
 	}
 
 	std::vector<ptx> xtmparray;
 	std::vector<pty> ytmparray;
+	u32 totalsize;
 
 	node start;
 
