@@ -28,23 +28,49 @@ template <class point, class data> class rangetree {
 public:
 	rangetree(u32 estimatedTotal = 1000, u32 estimatedResult = 100):
 		mainreserve(estimatedTotal), resultreserve(estimatedResult), init(false) {
-		tmparray.reserve(mainreserve);
+
+		xtmparray.reserve(mainreserve);
+		ytmparray.reserve(mainreserve);
 	}
 
 	int add(point x, point y, data * const ptr) {
+
 		if (init)
 			return 1;
+
+		ptx px;
+		pty py;
+
+		px.x = x;
+		py.y = y;
+		px.ptr = py.ptr = ptr;
+
+		xtmparray.push_back(px);
+		ytmparray.push_back(py);
 
 		return 0;
 	}
 
 	void finalize() {
+
+		init = true;
+
+		std::sort(xtmparray.begin(), xtmparray.end());
+		std::sort(ytmparray.begin(), ytmparray.end());
 	}
 
 	u32 count(point xmin, point xmax, point ymin, point ymax) {
+
+		if (!init)
+			return 0;
+
 	}
 
 	std::vector<data *> *search(point xmin, point xmax, point ymin, point ymax) {
+
+		if (!init)
+			return NULL;
+
 		std::vector<data *> * const res = new std::vector<data *>;
 		res->reserve(resultreserve);
 
@@ -52,13 +78,30 @@ public:
 	}
 
 private:
-	struct pt {
-		point x, y;
+	struct ptx {
+		point x;
 		data * ptr;
+
+		inline bool operator < (const ptx &other) const {
+			if (x >= other.x)
+				return false;
+			return true;
+		}
+	};
+	struct pty {
+		point y;
+		data * ptr;
+
+		inline bool operator < (const pty &other) const {
+			if (y >= other.y)
+				return false;
+			return true;
+		}
 	};
 
 
-	std::vector<pt> tmparray;
+	std::vector<ptx> xtmparray;
+	std::vector<pty> ytmparray;
 	u32 mainreserve, resultreserve;
 	bool init;
 };
