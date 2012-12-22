@@ -115,7 +115,7 @@ private:
 
 		std::vector<pty> ypoints;
 
-		node(): left(NULL), right(NULL) {}
+		node(): left(NULL), right(NULL), largestleft(0) {}
 	};
 
 	void build() {
@@ -149,11 +149,15 @@ private:
 			}
 		}
 
-		if (min == max) {
-			
-		} else {
-			const u32 mediani = totalsize / 2;
+		// If no kids, we're done here; otherwise, recurse
+		if (min != max) {
+			const u32 mediani = (min + max) / 2;
 			const point median = xtmparray[mediani].x;
+
+			n->largestleft = median;
+
+			n->left = build(0, mediani);
+			n->right = build(mediani + 1, max);
 		}
 
 		return n;
