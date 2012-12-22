@@ -69,7 +69,7 @@ public:
 		build();
 	}
 
-	u32 count(point xmin, point xmax, point ymin, point ymax) {
+	u32 count(point xmin, point xmax, point ymin, point ymax) const {
 
 		if (!init)
 			return 0;
@@ -101,7 +101,7 @@ public:
 		return sum;
 	}
 
-	std::vector<data *> *search(point xmin, point xmax, point ymin, point ymax) {
+	std::vector<data *> *search(point xmin, point xmax, point ymin, point ymax) const {
 
 		if (!init)
 			return NULL;
@@ -232,7 +232,7 @@ private:
 		delete n;
 	}
 
-	void findnodes(node * const n, const point xmin, const point xmax,
+	void findnodes(const node * const n, const point xmin, const point xmax,
 			std::vector<const node *> &list) const {
 		if (!n)
 			return;
