@@ -102,7 +102,7 @@ public:
 		for (u32 i = 0; i < max; i++) {
 			if (n->ypoints[i].y >= ymin &&
 				n->ypoints[i].y <= ymax)
-				res.push_back(n->ypoints[i]);
+				res->push_back(n->ypoints[i].ptr);
 		}
 
 		return res;
