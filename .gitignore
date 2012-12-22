@@ -2,3 +2,5 @@
 test/simple
 *.gch
 test/x-search-before-fin
+test/period
+test/*.log
