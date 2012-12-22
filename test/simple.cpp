@@ -40,5 +40,7 @@ int main() {
 	if (joo->size() != 2)
 		fail("Search count wrong, got %u expected 2\n", joo->size());
 
+	delete joo;
+
 	return 0;
 }
