@@ -17,7 +17,7 @@ int main() {
 
 	res = tree.count(0, 0, 0, 1);
 	if (res != 0)
-		fail("Count wrong, got %u, expected 1\n", res);
+		fail("Count wrong, got %u, expected 0\n", res);
 
 	res = tree.count(0, 800, 0, 1);
 	if (res != 1)
@@ -25,11 +25,11 @@ int main() {
 
 	res = tree.count(0, 800, 0, 2);
 	if (res != 2)
-		fail("Count wrong, got %u, expected 1\n", res);
+		fail("Count wrong, got %u, expected 2\n", res);
 
 	res = tree.count(0, 80, 0, 81);
 	if (res != 3)
-		fail("Count wrong, got %u, expected 1\n", res);
+		fail("Count wrong, got %u, expected 3\n", res);
 
 	std::vector<const char *> *joo = tree.search(0,500,2,600);
 	printf("(0,500) (2,600) search got %ld results\n", joo->size());
