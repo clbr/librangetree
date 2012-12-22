@@ -2,7 +2,7 @@
 
 int main() {
 
-	const u32 MAX = 50;
+	const u32 MAX = 100;
 
 	rangetree<u16, u16> tree;
 
