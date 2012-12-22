@@ -35,6 +35,11 @@ public:
 		ytmparray.reserve(mainreserve);
 	}
 
+	~rangetree() {
+		puts("CALLED");
+		nuke();
+	}
+
 	int add(point x, point y, data * const ptr) {
 
 		if (init)
@@ -161,6 +166,22 @@ private:
 		}
 
 		return n;
+	}
+
+	void nuke() {
+		nuke(start.left);
+		nuke(start.right);
+		puts("nukan");
+	}
+
+	void nuke(node * const n) {
+		if (!n)
+			return;
+
+		nuke(n->left);
+		nuke(n->right);
+
+		delete n;
 	}
 
 	std::vector<ptx> xtmparray;
