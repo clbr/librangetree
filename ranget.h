@@ -19,11 +19,45 @@
 #define LIBRANGET
 
 #include "types.h"
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+template <class point, class data> class rangetree {
+
+public:
+	rangetree(u32 estimatedTotal = 1000, u32 estimatedResult = 100):
+		mainreserve(estimatedTotal), resultreserve(estimatedResult), init(false) {
+		tmparray.reserve(mainreserve);
+	}
+
+	int addPoint(point x, point y, data * const ptr) {
+		if (init)
+			return 1;
+
+		return 0;
+	}
+
+	void finalize() {
+	}
+
+	u32 count(point xmin, point xmax, point ymin, point ymax) {
+	}
+
+	std::vector *search(point xmin, point xmax, point ymin, point ymax) {
+		std::vector<data *> * const res = new std::vector<data *>;
+	}
+
+private:
+	struct pt {
+		point x, y;
+		data * ptr;
+	};
 
 
-
-
-
-
+	std::vector<pt> tmparray;
+	u32 mainreserve, resultreserve;
+	bool init;
+};
 
 #endif
