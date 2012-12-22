@@ -166,7 +166,7 @@ private:
 		const u32 ymax = totalsize;
 		for (i = 0; i < ymax; i++) {
 			if (ytmparray[i].x >= min &&
-				ytmparray[i].y <= max) {
+				ytmparray[i].x <= max) {
 				n->ypoints.push_back(ytmparray[i]);
 			}
 		}
