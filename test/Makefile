@@ -7,5 +7,7 @@ CPPFLAGS += -I ..
 
 all: $(TARGETS)
 
+$(TARGETS): ../ranget.h
+
 clean:
 	rm -f *.o $(TARGETS)
