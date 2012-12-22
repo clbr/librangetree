@@ -107,6 +107,8 @@ private:
 		node * left;
 		node * right;
 
+		point largestleft;
+
 		std::vector<pty> ypoints;
 
 		node(): left(NULL), right(NULL) {}
