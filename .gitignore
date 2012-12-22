@@ -7,6 +7,7 @@ test/simple
 test/x-search-before-fin
 test/period
 test/random
+test/individual
 
 bench/countspeed
 bench/scaling
