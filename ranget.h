@@ -76,6 +76,15 @@ public:
 
 		u32 sum = 0;
 
+		node * const n = findnode(&start, xmin, xmax);
+
+		const u32 max = n->ypoints.size();
+		for (u32 i = 0; i < max; i++) {
+			if (n->ypoints[i].y >= ymin &&
+				n->ypoints[i].y <= ymax)
+				sum++;
+		}
+
 		return sum;
 	}
 
@@ -180,6 +189,20 @@ private:
 		nuke(n->right);
 
 		delete n;
+	}
+
+	node *findnode(node * const n, const point xmin, const point xmax) const {
+		if (!n)
+			return NULL;
+
+		if (xmin <= n->largestleft && xmax > n->largestleft)
+			return n;
+
+		node *out = findnode(n->left, xmin, xmax);
+		if (out)
+			return out;
+
+		return findnode(n->right, xmin, xmax);
 	}
 
 	std::vector<ptx> xtmparray;
