@@ -9,3 +9,4 @@ test/period
 test/random
 
 bench/countspeed
+bench/scaling

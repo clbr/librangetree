@@ -1,4 +1,4 @@
-TARGETS = countspeed
+TARGETS = countspeed scaling
 
 CXXFLAGS += -Wall -Wextra
 CPPFLAGS += -I ..
@@ -6,6 +6,9 @@ CPPFLAGS += -I ..
 .PHONY: all clean
 
 all: $(TARGETS)
+
+scaling: CXXFLAGS += -fopenmp
+scaling: LDFLAGS += -fopenmp
 
 $(TARGETS): ../ranget.h timing.h
 
