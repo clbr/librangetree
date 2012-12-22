@@ -43,7 +43,7 @@ public:
 		ptx px;
 		pty py;
 
-		px.x = x;
+		px.x = py.x = x;
 		py.y = y;
 		px.ptr = py.ptr = ptr;
 
@@ -59,6 +59,8 @@ public:
 
 		std::sort(xtmparray.begin(), xtmparray.end());
 		std::sort(ytmparray.begin(), ytmparray.end());
+
+		build();
 	}
 
 	u32 count(point xmin, point xmax, point ymin, point ymax) {
@@ -94,7 +96,7 @@ private:
 		}
 	};
 	struct pty {
-		point y;
+		point y, x;
 		data * ptr;
 
 		inline bool operator < (const pty &other) const {
@@ -113,6 +115,40 @@ private:
 
 		node(): left(NULL), right(NULL) {}
 	};
+
+	void build() {
+		if (xtmparray.size() < 2) {
+			// Trees of a single point aren't supported
+			return;
+		}
+
+		start.ypoints = ytmparray;
+
+		const u32 mediani = xtmparray.size() / 2;
+		const point median = xtmparray[mediani].x;
+
+		start.largestleft = median;
+
+		// Ok, divide it between everyone
+		start.left = build(0, mediani);
+		start.right = build(mediani + 1, xtmparray.size());
+	}
+
+	node *build(const u32 min, const u32 max) {
+
+		node * const n = new node;
+
+		u32 i;
+		const u32 ymax = ytmparray.size();
+		for (i = 0; i < ymax; i++) {
+			if (ytmparray[i].x >= min &&
+				ytmparray[i].y <= max) {
+				n->ypoints.push_back(ytmparray[i]);
+			}
+		}
+
+		return n;
+	}
 
 	std::vector<ptx> xtmparray;
 	std::vector<pty> ytmparray;
