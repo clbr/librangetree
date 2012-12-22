@@ -96,6 +96,15 @@ public:
 		std::vector<data *> * const res = new std::vector<data *>;
 		res->reserve(resultreserve);
 
+		node * const n = findnode(&start, xmin, xmax);
+
+		const u32 max = n->ypoints.size();
+		for (u32 i = 0; i < max; i++) {
+			if (n->ypoints[i].y >= ymin &&
+				n->ypoints[i].y <= ymax)
+				res.push_back(n->ypoints[i]);
+		}
+
 		return res;
 	}
 
