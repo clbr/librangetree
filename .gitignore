@@ -1,6 +1,9 @@
 *.o
-test/simple
 *.gch
+
+test/*.log
+
+test/simple
 test/x-search-before-fin
 test/period
-test/*.log
+test/random
