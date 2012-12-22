@@ -112,9 +112,11 @@ private:
 		node(): left(NULL), right(NULL) {}
 	};
 
-
 	std::vector<ptx> xtmparray;
 	std::vector<pty> ytmparray;
+
+	node start;
+
 	u32 mainreserve, resultreserve;
 	bool init;
 };
