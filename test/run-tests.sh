@@ -24,6 +24,7 @@ for bin in $*; do
 	ret=0
 	case $test in x*) ret=1 ;; esac
 
+	echo Running test $test...
 	./$test > $log
 	if [ $? -ne $ret ]; then
 		fail=$((fail + 1))
