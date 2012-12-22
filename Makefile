@@ -2,12 +2,18 @@
 
 PREFIX ?= /usr
 
-all:
-#	$(CXX) ranget.h
+prechdr = ranget.h.gch
+
+
+all: $(prechdr)
 	$(MAKE) -C test
+
+$(prechdr): ranget.h
+	$(CXX) $(CXXFLAGS) ranget.h
 
 clean:
 	$(MAKE) -C test clean
+	rm -f $(prechdr)
 
 install:
 	mkdir -p $(DESTDIR)/$(PREFIX)/include
