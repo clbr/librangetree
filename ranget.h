@@ -108,6 +108,8 @@ private:
 		node * right;
 
 		std::vector<pty> ypoints;
+
+		node(): left(NULL), right(NULL) {}
 	};
 
 
