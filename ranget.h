@@ -204,7 +204,7 @@ private:
 		if (!n)
 			return NULL;
 
-		if (xmin <= n->largestleft && xmax > n->largestleft)
+		if (xmin <= n->largestleft && xmax >= n->largestleft)
 			return n;
 
 		node *out = findnode(n->left, xmin, xmax);
