@@ -36,7 +36,6 @@ public:
 	}
 
 	~rangetree() {
-		puts("CALLED");
 		nuke();
 	}
 
@@ -171,7 +170,6 @@ private:
 	void nuke() {
 		nuke(start.left);
 		nuke(start.right);
-		puts("nukan");
 	}
 
 	void nuke(node * const n) {
