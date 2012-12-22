@@ -64,6 +64,9 @@ public:
 		if (!init)
 			return 0;
 
+		u32 sum = 0;
+
+		return sum;
 	}
 
 	std::vector<data *> *search(point xmin, point xmax, point ymin, point ymax) {
