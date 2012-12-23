@@ -59,7 +59,7 @@ int main() {
 		const u32 power = ipow(10, i+1);
 		check(power, results[i][0], results[i][1]);
 	}
-	puts("");
+	puts("\n");
 
 	for (i = 0; i < powers; i++) {
 		const u32 power = ipow(10, i+1);
