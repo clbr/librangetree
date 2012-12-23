@@ -238,24 +238,28 @@ private:
 //		if (min > max)
 //			abort();
 
-		u32 i;
-		const u32 ymax = totalsize;
-		for (i = 0; i < ymax; i++) {
-			if (ytmparray[i].x >= min &&
-				ytmparray[i].x <= max) {
-				n->ypoints.push_back(ytmparray[i]);
-			}
-		}
-
 		n->min = min;
 		n->max = max;
 
-		// If no kids, we're done here; otherwise, recurse
-		if (min != max) {
+		u32 i;
+		const u32 ymax = totalsize;
+
+		// If no kids, create the array linearly; otherwise, recurse
+		if (min == max) {
+			for (i = 0; i < ymax; i++) {
+				if (ytmparray[i].x >= min &&
+					ytmparray[i].x <= max) {
+					n->ypoints.push_back(ytmparray[i]);
+				}
+			}
+		} else {
 			const u32 median = (min + max) / 2;
 
 			n->left = build(min, median);
 			n->right = build(median + 1, max);
+
+			// For faster builds, we merge our kids' arrays into ours
+			mergekids(n->ypoints, n->left, n->right);
 		}
 
 		return n;
@@ -294,6 +298,32 @@ private:
 
 		findnodes(n->left, xmin, xmax, list);
 		findnodes(n->right, xmin, xmax, list);
+	}
+
+	void mergekids(std::vector<pty> &arr, node * const left, node * const right) const {
+
+		u32 l, r, lmax, rmax;
+		lmax = left->ypoints.size();
+		rmax = right->ypoints.size();
+
+		for (l = 0, r = 0; l < lmax || r < rmax;) {
+			// Special cases first: if one array is out
+			if (l == lmax) {
+				arr.push_back(right->ypoints[r]);
+				r++;
+			} else if (r == rmax) {
+				arr.push_back(left->ypoints[l]);
+				l++;
+			} else {
+				if (left->ypoints[l].y <= right->ypoints[r].y) {
+					arr.push_back(left->ypoints[l]);
+					l++;
+				} else {
+					arr.push_back(right->ypoints[r]);
+					r++;
+				}
+			}
+		}
 	}
 
 	void pswap(point &a, point &b) const {
