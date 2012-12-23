@@ -172,6 +172,9 @@ private:
 	// A binary search that returns the index if found, the next index if not
 	u32 binarynext(const std::vector<pty> &arr, const point goal) const {
 
+		if (arr.size() == 0)
+			return 0;
+
 		const u32 max = arr.size() - 1;
 
 		// These have to be signed to avoid overflow. s64 to contain u32.
@@ -187,8 +190,12 @@ private:
 
 		} while (left <= right && goal != arr[t].y);
 
-		if (arr[t].y == goal)
+		// We might've landed in the middle. Linearly get the earliest.
+		if (arr[t].y == goal) {
+			while (t && arr[t-1].y == goal)
+				t--;
 			return t;
+		}
 
 		if (arr[t].y < goal)
 			return t + 1;
