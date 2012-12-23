@@ -1,4 +1,4 @@
-TARGETS = countspeed scaling
+TARGETS = countspeed scaling mil
 
 CXXFLAGS += -Wall -Wextra
 CPPFLAGS += -I ..
