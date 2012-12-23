@@ -18,12 +18,11 @@ static void check(const u32 max, u32 &create, u32 &search) {
 	tree.finalize();
 	create = t.t();
 
-	const u32 smax = max * 1000;
-	for (u32 i = 0; i < smax; i++) {
+	for (u32 i = 0; i < maxnum; i++) {
 		u32 x = rand();
 		u32 y = rand();
 
-		tree.count(x, x+10, y, y+10);
+		tree.count(x, x+100, y, y+100);
 	}
 
 	search = t.t();
@@ -61,10 +60,10 @@ int main() {
 	for (i = 0; i < powers; i++) {
 		const u32 power = ipow(10, i+1);
 		printf("Using %u points, creation took %u us (%u ms)\n"
-			"\tand %uk searches took %u us. (%.2f ns/search)\n",
+			"\tand 1M searches took %u us. (%.2f ns/search)\n",
 			power, results[i][0], results[i][0] / 1000,
-			power, results[i][1],
-			(float) results[i][1] / power);
+			results[i][1],
+			(float) results[i][1] / maxnum);
 	}
 
 	printf("\n\nProgression:\n");
