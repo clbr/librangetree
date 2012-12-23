@@ -283,7 +283,7 @@ private:
 		n->min = min;
 		n->max = max;
 
-		// If no kids, create the array linearly; otherwise, recurse
+		// If no kids, create the array; otherwise, recurse
 		if (min == max) {
 			const u32 lower = binarynextx(xtmparray, min);
 			const u32 upper = binarynextx(xtmparray, max + 1);
