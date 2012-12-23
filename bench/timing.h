@@ -16,11 +16,14 @@ public:
 		struct timeval now;
 		gettimeofday(&now, NULL);
 
-		u32 msec = (now.tv_sec - tick.tv_sec) * 1000;
-		msec += (now.tv_usec - tick.tv_usec) / 1000;
+//		u32 msec = (now.tv_sec - tick.tv_sec) * 1000;
+//		msec += (now.tv_usec - tick.tv_usec) / 1000;
+
+		u32 usec = (now.tv_sec - tick.tv_sec) * 1000000;
+		usec += (now.tv_usec - tick.tv_usec);
 
 		tick = now;
-		return msec;
+		return usec;
 	}
 
 	void r() {
