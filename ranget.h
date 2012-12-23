@@ -217,7 +217,7 @@ private:
 			start.right = build(median + 1, start.max);
 	}
 
-	node *build(const u32 min, const u32 max) {
+	node *build(const point min, const point max) {
 
 		node * const n = new node;
 
