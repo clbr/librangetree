@@ -47,7 +47,7 @@ int main() {
 		const char * const s = (*second)[i];
 		printf("Pos %u has %s\n", i, s);
 
-		if (strncmp(s, "tree", 3) != 0)
+		if (strncmp(s, "tree", 4) != 0)
 			fail("Unexpected string\n");
 	}
 
