@@ -90,10 +90,13 @@ public:
 		for (u32 k = 0; k < ncount; k++) {
 			const node * const n = list[k];
 			const u32 max = n->ypoints.size();
+			if (!max)
+				continue;
 
-			for (u32 i = 0; i < max; i++) {
-				if (n->ypoints[i].y >= ymin &&
-					n->ypoints[i].y <= ymax)
+			const u32 lower = binarynext(n->ypoints, ymin);
+			const u32 upper = binarynext(n->ypoints, ymax + 1);
+
+			for (u32 i = lower; i < upper; i++) {
 					sum++;
 			}
 		}
@@ -123,10 +126,13 @@ public:
 		for (u32 k = 0; k < ncount; k++) {
 			const node * const n = list[k];
 			const u32 max = n->ypoints.size();
+			if (!max)
+				continue;
 
-			for (u32 i = 0; i < max; i++) {
-				if (n->ypoints[i].y >= ymin &&
-					n->ypoints[i].y <= ymax)
+			const u32 lower = binarynext(n->ypoints, ymin);
+			const u32 upper = binarynext(n->ypoints, ymax + 1);
+
+			for (u32 i = lower; i < upper; i++) {
 					res->push_back(n->ypoints[i].ptr);
 			}
 		}
