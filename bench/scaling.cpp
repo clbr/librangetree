@@ -8,7 +8,7 @@ static u32 loops = 0;
 
 enum {
 	numhigh = 1000000,
-	looper = 500
+	looper = 5000
 };
 
 static inline u32 subrand() {
