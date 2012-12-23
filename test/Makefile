@@ -1,4 +1,4 @@
-TARGETS = simple x-search-before-fin period random individual
+TARGETS = simple x-search-before-fin period random individual identica
 
 CXXFLAGS += -Wall -Wextra
 CPPFLAGS += -I ..
