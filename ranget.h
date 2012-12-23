@@ -309,11 +309,13 @@ private:
 		for (l = 0, r = 0; l < lmax || r < rmax;) {
 			// Special cases first: if one array is out
 			if (l == lmax) {
-				arr.push_back(right->ypoints[r]);
-				r++;
+				arr.insert(arr.end(), right->ypoints.begin() + r,
+					right->ypoints.end());
+				break;
 			} else if (r == rmax) {
-				arr.push_back(left->ypoints[l]);
-				l++;
+				arr.insert(arr.end(), left->ypoints.begin() + l,
+					left->ypoints.end());
+				break;
 			} else {
 				if (left->ypoints[l].y <= right->ypoints[r].y) {
 					arr.push_back(left->ypoints[l]);
