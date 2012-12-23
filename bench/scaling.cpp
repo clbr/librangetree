@@ -8,7 +8,7 @@ static u32 loops = 0;
 
 enum {
 	numhigh = 1000000,
-	looper = 10
+	looper = 30
 };
 
 static void doit() {
@@ -59,6 +59,9 @@ int main() {
 
 	for (i = 1; i <= max; i++) {
 		omp_set_num_threads(i);
+		printf("%u.. ", i);
+		fflush(stdout);
+
 		alarm(2);
 		doit();
 
@@ -66,11 +69,12 @@ int main() {
 		loops = 0;
 	}
 
-	printf("\n\nScaling results:\n");
+	printf("\n\n\nScaling results:\n");
 	for (i = 1; i <= max; i++) {
-		printf("%u core%s: %u searches/sec\n",
+		printf("%u core%s: %u searches/sec, normalized %.2f\n",
 			i, i > 1 ? "s" : "",
-			results[i]);
+			results[i],
+			(float) results[i]/results[1]);
 	}
 
 	return 0;
