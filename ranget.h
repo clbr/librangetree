@@ -170,11 +170,12 @@ private:
 	};
 
 	// A binary search that returns the index if found, the next index if not
-	u32 binarynext(const std::vector<pty> &arr, const point goal) {
+	u32 binarynext(const std::vector<pty> &arr, const point goal) const {
 
 		const u32 max = arr.size() - 1;
 
-		u32 t, left = 0, right = max;
+		// These have to be signed to avoid overflow. s64 to contain u32.
+		s64 t, left = 0, right = max;
 
 		do {
 			t = (left + right) / 2;
