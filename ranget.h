@@ -306,6 +306,8 @@ private:
 		const u32 lmax = left->ypoints.size();
 		const u32 rmax = right->ypoints.size();
 
+		arr.reserve(lmax + rmax);
+
 		for (l = 0, r = 0; l < lmax || r < rmax;) {
 			// Special cases first: if one array is out
 			if (l == lmax) {
