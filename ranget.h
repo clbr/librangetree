@@ -67,6 +67,8 @@ public:
 		totalsize = ytmparray.size();
 
 		build();
+
+		xtmparray.clear();
 	}
 
 	u32 count(point xmin, point xmax, point ymin, point ymax) const {
