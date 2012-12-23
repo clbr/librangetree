@@ -170,7 +170,7 @@ private:
 	};
 
 	// A binary search that returns the index if found, the next index if not
-	u32 binarynext(const std::vector<pty> &arr, const u32 goal) {
+	u32 binarynext(const std::vector<pty> &arr, const point goal) {
 
 		const u32 max = arr.size() - 1;
 
@@ -189,7 +189,10 @@ private:
 		if (arr[t].y == goal)
 			return t;
 
-		return t + 1;
+		if (arr[t].y < goal)
+			return t + 1;
+
+		return t;
 	}
 
 	void build() {
