@@ -165,6 +165,12 @@ private:
 				return false;
 			return true;
 		}
+		pty(const ptx &px) {
+			x = px.x;
+			y = px.y;
+			ptr = px.ptr;
+		}
+		pty() {}
 	};
 	struct node {
 		node * left;
@@ -211,6 +217,40 @@ private:
 		return t;
 	}
 
+	// Same for X-sorted arrays
+	u32 binarynextx(const std::vector<ptx> &arr, const point goal) const {
+
+		if (arr.size() == 0)
+			return 0;
+
+		const u32 max = arr.size() - 1;
+
+		// These have to be signed to avoid overflow. s64 to contain u32.
+		s64 t, left = 0, right = max;
+
+		do {
+			t = (left + right) / 2;
+
+			if (goal < arr[t].x)
+				right = t - 1;
+			else
+				left = t + 1;
+
+		} while (left <= right && goal != arr[t].x);
+
+		// We might've landed in the middle. Linearly get the earliest.
+		if (arr[t].x == goal) {
+			while (t && arr[t-1].x == goal)
+				t--;
+			return t;
+		}
+
+		if (arr[t].x < goal)
+			return t + 1;
+
+		return t;
+	}
+
 	void build() {
 		if (totalsize < 2) {
 			// Trees of a single point aren't supported
@@ -243,17 +283,17 @@ private:
 		n->min = min;
 		n->max = max;
 
-		u32 i;
-		const u32 ymax = totalsize;
-
 		// If no kids, create the array linearly; otherwise, recurse
 		if (min == max) {
-			for (i = 0; i < ymax; i++) {
-				if (ytmparray[i].x >= min &&
-					ytmparray[i].x <= max) {
-					n->ypoints.push_back(ytmparray[i]);
-				}
-			}
+			const u32 lower = binarynextx(xtmparray, min);
+			const u32 upper = binarynextx(xtmparray, max + 1);
+
+			n->ypoints.reserve(upper - lower);
+			n->ypoints.insert(n->ypoints.end(),
+				xtmparray.begin() + lower,
+				xtmparray.begin() + upper);
+
+			std::sort(n->ypoints.begin(), n->ypoints.end());
 		} else {
 			const u32 median = (min + max) / 2;
 
