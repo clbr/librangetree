@@ -226,7 +226,7 @@ private:
 		// Ok, divide it between everyone
 		start.left = build(0, median);
 
-		// If it's really small..
+		// If it's really small, it may not have a right branch..
 		if (median != start.max)
 			start.right = build(median + 1, start.max);
 	}
