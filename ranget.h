@@ -133,6 +133,10 @@ public:
 		return res;
 	}
 
+	static const char *version() {
+		return "librangetree 0.1";
+	}
+
 private:
 	struct ptx {
 		point x;
