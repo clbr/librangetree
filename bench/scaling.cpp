@@ -8,7 +8,7 @@ static u32 loops = 0;
 
 enum {
 	numhigh = 1000000,
-	looper = 30
+	looper = 500
 };
 
 static void doit() {
