@@ -169,6 +169,29 @@ private:
 		node(): left(NULL), right(NULL), min(0), max(0) {}
 	};
 
+	// A binary search that returns the index if found, the next index if not
+	u32 binarynext(std::vector<pty> &arr, const u32 goal) {
+
+		const u32 max = arr.size() - 1;
+
+		u32 t, left = 0, right = max;
+
+		do {
+			t = (left + right) / 2;
+
+			if (goal < arr[t].y)
+				right = t - 1;
+			else
+				left = t + 1;
+
+		} while (left <= right && goal != arr[t].y);
+
+		if (arr[t].y == goal)
+			return t;
+
+		return t + 1;
+	}
+
 	void build() {
 		if (totalsize < 2) {
 			// Trees of a single point aren't supported
