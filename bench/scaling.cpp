@@ -11,6 +11,10 @@ enum {
 	looper = 500
 };
 
+static inline u32 subrand() {
+	return rand() % numhigh;
+}
+
 static void doit() {
 	running = 1;
 
@@ -18,7 +22,7 @@ static void doit() {
 		s32 i;
 		#pragma omp parallel for
 		for (i = 0; i < looper; i++) {
-			tree.count(i*67, i*431, i*767, i*2222);
+			tree.count(subrand(), subrand(), subrand(), subrand());
 		}
 		loops += looper;
 //		usleep(1);
@@ -47,9 +51,9 @@ int main() {
 	sigaction(SIGALRM, &sa, NULL);
 
 	// init the tree
-	for (i = 0; i < numhigh / 1000; i++) {
-		const u32 x = rand() % numhigh;
-		const u32 y = rand() % numhigh;
+	for (i = 0; i < numhigh; i++) {
+		const u32 x = subrand();
+		const u32 y = subrand();
 		tree.add(x, y, 0);
 	}
 	tree.finalize();
