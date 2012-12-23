@@ -19,8 +19,8 @@ static void check(const u32 max, u32 &create, u32 &search) {
 	create = t.t();
 
 	for (u32 i = 0; i < maxnum; i++) {
-		u32 x = rand();
-		u32 y = rand();
+		u32 x = rand() % maxnum;
+		u32 y = rand() % maxnum;
 
 		tree.count(x, x+100, y, y+100);
 	}
