@@ -237,6 +237,12 @@ private:
 		if (!n)
 			return;
 
+		// Fast outs
+		if (xmin > n->max)
+			return;
+		if (xmax < n->min)
+			return;
+
 		if (xmin <= n->min && xmax >= n->max) {
 			list.push_back(n);
 			return;
