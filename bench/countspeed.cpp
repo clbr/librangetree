@@ -2,7 +2,7 @@
 
 enum {
 	maxnum = 1000000,
-	powers = 3
+	powers = 6
 };
 
 static void check(const u32 max, u32 &create, u32 &search) {
