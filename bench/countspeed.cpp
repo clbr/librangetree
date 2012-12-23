@@ -53,15 +53,19 @@ int main() {
 
 	u32 i;
 	for (i = 0; i < powers; i++) {
+		printf("10^%u.. ", i+1);
+		fflush(stdout);
+
 		const u32 power = ipow(10, i+1);
 		check(power, results[i][0], results[i][1]);
 	}
+	puts("");
 
 	for (i = 0; i < powers; i++) {
 		const u32 power = ipow(10, i+1);
-		printf("Using %u points, creation took %u us (%u ms)\n"
+		printf("Using %u (10^%u) points, creation took %u us (%u ms)\n"
 			"\tand 1M searches took %u us. (%.2f us/search)\n",
-			power, results[i][0], results[i][0] / 1000,
+			power, i+1, results[i][0], results[i][0] / 1000,
 			results[i][1],
 			(float) results[i][1] / maxnum);
 	}
