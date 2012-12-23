@@ -48,7 +48,7 @@ public:
 		pty py;
 
 		px.x = py.x = x;
-		py.y = y;
+		px.y = py.y = y;
 		px.ptr = py.ptr = ptr;
 
 		xtmparray.push_back(px);
@@ -146,6 +146,7 @@ public:
 private:
 	struct ptx {
 		point x;
+		point y;
 		data * ptr;
 
 		inline bool operator < (const ptx &other) const {
@@ -155,7 +156,8 @@ private:
 		}
 	};
 	struct pty {
-		point y, x;
+		point x;
+		point y;
 		data * ptr;
 
 		inline bool operator < (const pty &other) const {
