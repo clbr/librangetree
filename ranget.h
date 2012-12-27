@@ -18,7 +18,7 @@
 #ifndef LIBRANGET
 #define LIBRANGET
 
-#include "types.h"
+#include "lrtypes.h"
 
 #include <stdio.h>
 #include <iostream>
