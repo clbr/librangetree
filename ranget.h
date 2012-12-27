@@ -69,7 +69,6 @@ public:
 		build();
 
 		xtmparray.clear();
-		ytmparray.clear();
 	}
 
 	u32 count(point xmin, point xmax, point ymin, point ymax) const {
@@ -261,6 +260,7 @@ private:
 		}
 
 		start.ypoints = ytmparray;
+		ytmparray.clear();
 
 		const u32 medianidx = totalsize / 2;
 		const point median = xtmparray[medianidx].x;
