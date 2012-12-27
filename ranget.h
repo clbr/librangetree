@@ -20,6 +20,12 @@
 
 #include "lrtypes.h"
 
+#ifdef __GNUC__
+#define fetch(a) __builtin_prefetch(a)
+#else
+#define fetch(a)
+#endif
+
 #include <stdio.h>
 #include <iostream>
 #include <algorithm>
@@ -343,6 +349,9 @@ private:
 			return;
 		if (!n->ypoints.size())
 			return;
+
+		fetch(n->left);
+		fetch(n->right);
 
 		if (xmin <= n->min && xmax >= n->max) {
 			list.push_back(n);
