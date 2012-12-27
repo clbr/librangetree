@@ -353,7 +353,8 @@ private:
 		findnodes(n->right, xmin, xmax, list);
 	}
 
-	void mergekids(std::vector<pty> &arr, node * const left, node * const right) const {
+	void mergekids(std::vector<pty> &arr, node * const __restrict__ left,
+			node * const __restrict__ right) const {
 
 		u32 l, r;
 		const u32 lmax = left->ypoints.size();
@@ -383,7 +384,7 @@ private:
 		}
 	}
 
-	void pswap(point &a, point &b) const {
+	void pswap(point & __restrict__ a, point & __restrict__ b) const {
 		point tmp = a;
 		a = b;
 		b = tmp;
