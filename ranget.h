@@ -69,6 +69,7 @@ public:
 		build();
 
 		xtmparray.clear();
+		ytmparray.clear();
 	}
 
 	u32 count(point xmin, point xmax, point ymin, point ymax) const {
