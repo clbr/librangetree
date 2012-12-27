@@ -35,6 +35,7 @@ template <class point, class data> class rangetree {
 
 public:
 	rangetree(u32 estimatedTotal = 1000, u32 estimatedResult = 100):
+		pool(NULL),
 		mainreserve(estimatedTotal), resultreserve(estimatedResult), init(false) {
 
 		xtmparray.reserve(mainreserve);
@@ -43,6 +44,7 @@ public:
 
 	~rangetree() {
 		nuke();
+		delete [] pool;
 	}
 
 	int add(point x, point y, data * const ptr) {
@@ -67,10 +69,12 @@ public:
 
 		init = true;
 
+		totalsize = ytmparray.size();
+
+		initpool(totalsize);
+
 		std::sort(xtmparray.begin(), xtmparray.end());
 		std::sort(ytmparray.begin(), ytmparray.end());
-
-		totalsize = ytmparray.size();
 
 		build();
 
@@ -284,7 +288,7 @@ private:
 
 	node *build(const point min, const point max) {
 
-		node * const n = new node;
+		node * const n = newnode();
 
 //		if (min > max)
 //			abort();
@@ -334,7 +338,8 @@ private:
 		nuke(n->left);
 		nuke(n->right);
 
-		delete n;
+		if (!ispooled(n))
+			delete n;
 	}
 
 	void findnodes(const node * const n, const point xmin, const point xmax,
@@ -393,6 +398,32 @@ private:
 		}
 	}
 
+	// A memory pool for nodes, to save on the housekeeping overhead,
+	// and hopefully gain a bit in cache advantages.
+	void initpool(const u32 amount) {
+		// If we have N points, the likely amount of nodes is 2N - 1.
+		poolcount = amount*2;
+		poolgiven = 0;
+
+		pool = new node[poolcount];
+	}
+
+	node * newnode() {
+		if (poolgiven < poolcount) {
+			node * const out = &pool[poolgiven];
+			poolgiven++;
+			return out;
+		} else {
+			return new node;
+		}
+	}
+
+	bool ispooled(const node * const n) const {
+		if (n >= &pool[0] && n <= &pool[poolcount - 1])
+			return true;
+		return false;
+	}
+
 	void pswap(point & __restrict__ a, point & __restrict__ b) const {
 		point tmp = a;
 		a = b;
@@ -404,6 +435,9 @@ private:
 	u32 totalsize;
 
 	node start;
+	node *pool;
+	u32 poolcount;
+	u32 poolgiven;
 
 	u32 mainreserve, resultreserve;
 	bool init;
