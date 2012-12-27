@@ -334,6 +334,8 @@ private:
 			return;
 		if (xmax < n->min)
 			return;
+		if (!n->ypoints.size())
+			return;
 
 		if (xmin <= n->min && xmax >= n->max) {
 			list.push_back(n);
