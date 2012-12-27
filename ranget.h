@@ -286,10 +286,16 @@ private:
 		n->min = min;
 		n->max = max;
 
+		const u32 lower = binarynextx(xtmparray, min);
+		const u32 upper = binarynextx(xtmparray, max + 1);
+
+		// Quick check: if nothing below me, no need to create anything below
+		if (lower == upper) {
+			return n;
+		}
+
 		// If no kids, create the array; otherwise, recurse
 		if (min == max) {
-			const u32 lower = binarynextx(xtmparray, min);
-			const u32 upper = binarynextx(xtmparray, max + 1);
 
 			n->ypoints.reserve(upper - lower);
 			n->ypoints.insert(n->ypoints.end(),
