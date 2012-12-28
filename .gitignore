@@ -14,3 +14,4 @@ test/mem-too-little
 bench/countspeed
 bench/scaling
 bench/mil
+bench/viz
