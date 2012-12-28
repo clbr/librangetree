@@ -31,6 +31,38 @@ In this example, we added three points to the tree:
 As can be seen, any kind of range search can be efficiently answered from
 this tree.
 
+Performance
+-----------
+
+This was measured using the included benchmark, bench/countspeed, on a
+Phenom II 2.8GHz.
+
+----
+Using 10 (10^1) points, creation took 26 us (0 ms)
+        and 1M searches took 49985 us. (0.05 us/search)
+Using 100 (10^2) points, creation took 49 us (0 ms)
+        and 1M searches took 73406 us. (0.07 us/search)
+Using 1000 (10^3) points, creation took 535 us (0 ms)
+        and 1M searches took 118294 us. (0.12 us/search)
+Using 10000 (10^4) points, creation took 6222 us (6 ms)
+        and 1M searches took 279652 us. (0.28 us/search)
+Using 100000 (10^5) points, creation took 72399 us (72 ms)
+        and 1M searches took 867422 us. (0.87 us/search)
+Using 1000000 (10^6) points, creation took 689253 us (689 ms)
+        and 1M searches took 1923755 us. (1.92 us/search)
+Using 10000000 (10^7) points, creation took 4857303 us (4857 ms)
+        and 1M searches took 3013128 us. (3.01 us/search)
+----
+
+Where do I get it?
+------------------
+
+librangetree is open source, under the AGPLv3 license.
+
+You can download it at http://librangetree.sourceforge.net/.
+
+Commercial licensing is also available. Contact us for details.
+
 Limits
 ------
 
