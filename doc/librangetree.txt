@@ -10,3 +10,35 @@ counting and reporting queries.
 Intro
 -----
 
+So what's it and why would I need it?
+
+It's a solution for a specific type of searches - those done on relatively
+static data, in two dimensions.
+
+.For example:
+- Give me the names of all people between the ages 35-56 earning 20-50k
+- How many cities exist between coordinates 56,67 and 77,89
+
+
+What it looks like
+------------------
+.In-memory layout
+image::example.png[]
+
+In this example, we added three points to the tree:
+(1, 0), (10, 0), and (100, 0).
+
+As can be seen, any kind of range search can be efficiently answered from
+this tree.
+
+Limits
+------
+
+.Limits
+- Once created, it is read-only
+- The maximum dataset it can hold is 2^32 (4 billion points).
+
+TIP: If you need more, consider splitting your data at a higher
+level.
+
+- Creation is not thread-safe - searches are
