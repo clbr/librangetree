@@ -43,7 +43,8 @@ Phenom II 2.8GHz, using the 1.0 version.
 These are all counting searches, since the reporting overhead depends on
 the libc implementation among other things.
 
-The timer accuracy on this computer is about 70 ns.
+The timer accuracy on this computer is about 70 ns, but due to other noise,
+consider the margins of error to be 5%.
 
 ----
 Using 10 (10^1) points, creation took 26 us (0 ms)
