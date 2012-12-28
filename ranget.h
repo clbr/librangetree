@@ -230,6 +230,9 @@ public:
 #endif
 
 private:
+	// Note the order here: pointer after coordinates.
+	// If using 16 or 8-bit coords, this wastes space, but
+	// it's done like this to improve cache usage (critical word).
 	struct ptx {
 		point x;
 		point y;
