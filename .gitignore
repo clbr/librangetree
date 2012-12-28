@@ -11,6 +11,7 @@ test/random
 test/individual
 test/identica
 test/mem-too-little
+test/signed
 
 bench/countspeed
 bench/scaling

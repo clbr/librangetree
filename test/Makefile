@@ -1,5 +1,5 @@
 TARGETS = simple x-search-before-fin period random individual identica \
-		mem-too-little
+		mem-too-little signed
 
 CXXFLAGS += -Wall -Wextra
 CPPFLAGS += -I ..
