@@ -1,4 +1,5 @@
-TARGETS = simple x-search-before-fin period random individual identica
+TARGETS = simple x-search-before-fin period random individual identica \
+		mem-too-little
 
 CXXFLAGS += -Wall -Wextra
 CPPFLAGS += -I ..

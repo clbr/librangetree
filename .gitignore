@@ -9,6 +9,7 @@ test/period
 test/random
 test/individual
 test/identica
+test/mem-too-little
 
 bench/countspeed
 bench/scaling
