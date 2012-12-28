@@ -41,7 +41,8 @@ This was measured using the included benchmark, bench/countspeed, on a
 Phenom II 2.8GHz, using the 1.0 version.
 
 These are all counting searches, since the reporting overhead depends on
-the libc implementation among other things.
+the libc implementation among other things. +
+ +
 
 The timer accuracy on this computer is about 70 ns, but due to other noise,
 consider the margins of error to be 5%.
