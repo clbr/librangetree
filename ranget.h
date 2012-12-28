@@ -31,6 +31,10 @@
 #include <algorithm>
 #include <vector>
 
+#ifdef LR_VISUALIZE
+#include <gvc.h>
+#endif
+
 template <class point, class data> class rangetree {
 
 public:
@@ -195,6 +199,31 @@ public:
 	static const char *version() {
 		return "librangetree 0.1";
 	}
+
+#ifdef LR_VISUALIZE
+	void visualize(const char name[] = "out.png") const {
+
+		if (!init)
+			return;
+
+		GVC_t *gvc;
+		graph_t *g;
+		Agnode_t *nr;
+
+		gvc = gvContext();
+		g = agopen((char *)"g", AGDIGRAPH);
+		nr = agnode(g, visname(&start));
+
+		visualize(&start, g, nr);
+
+		gvLayout(gvc, g, "dot");
+		gvRenderFilename(gvc, g, "png", name);
+		gvFreeLayout(gvc, g);
+
+		agclose(g);
+		gvFreeContext(gvc);
+	}
+#endif
 
 private:
 	struct ptx {
@@ -438,6 +467,34 @@ private:
 			}
 		}
 	}
+
+#ifdef LR_VISUALIZE
+	void visualize(const node * const n, graph_t * const g, Agnode_t * const n1) const {
+
+		Agnode_t *temp;
+		Agedge_t *e;
+
+		if (n->left) {
+			temp = agnode(g, visname(n->left));
+			e = agedge(g, n1, temp);
+			agsafeset(e, (char*) "label", (char*) "Left", (char*) "Left");
+			visualize(n->left, g, temp);
+		}
+		if (n->right) {
+			temp = agnode(g, visname(n->right));
+			e = agedge(g, n1, temp);
+			agsafeset(e, (char*) "label", (char*) "Right", (char*) "Right");
+			visualize(n->right, g, temp);
+		}
+	}
+
+	// Yes, this leaks memory. It's a debug option anyhow.
+	char *visname(const node * const n) const {
+		char *ptr;
+		asprintf(&ptr, "%u-%u, %u points", n->min, n->max, n->ypoints.size());
+		return ptr;
+	}
+#endif
 
 	// A memory pool for nodes, to save on the housekeeping overhead,
 	// and hopefully gain a bit in cache advantages.
