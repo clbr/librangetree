@@ -10,7 +10,7 @@ counting and reporting queries.
 Intro
 -----
 
-So what's it and why would I need it?
+So what's this and why would I need it?
 
 It's a solution for a specific type of searches - those done on relatively
 static data, in two dimensions.
@@ -42,3 +42,20 @@ TIP: If you need more, consider splitting your data at a higher
 level.
 
 - Creation is not thread-safe - searches are
+
+FAQ
+---
+
+[qanda]
+What are the search and space efficiencies?::
+
+	The space usage is O(n log n), and the search efficiency is O(log^2
+	n).
+
+I hear fractional cascading enables O(log n) search?::
+
+	True, but it would also nearly double the RAM use. This was
+	considered too excessive.
+
+	Using one million points on a 64-bit platform, the tree takes about
+	430 mb of RAM currently.
