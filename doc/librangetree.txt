@@ -16,7 +16,7 @@ It's a solution for a specific type of searches - those done on relatively
 static data, in two dimensions.
 
 .For example:
-- Give me the names of all people between the ages 35-56 earning 20-50k
+- Give me the names of all people between the ages 35-56 earning 20k-50k
 - How many cities exist between coordinates 56,67 and 77,89
 
 
