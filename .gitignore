@@ -1,5 +1,6 @@
 *.o
 *.gch
+*.html
 
 test/*.log
 

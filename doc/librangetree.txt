@@ -1,0 +1,12 @@
+librangetree
+============
+Lauri Kasanen <cand at gmx.com>
+
+librangetree is a C++ template, implementing a 2d range tree for both
+counting and reporting queries.
+
+:numbered:
+
+Intro
+-----
+
