@@ -445,8 +445,8 @@ private:
 			node * const __restrict__ right) const {
 
 		u32 l, r;
-		const u32 lmax = left->ypoints.size();
-		const u32 rmax = right->ypoints.size();
+		const u32 lmax = left ? left->ypoints.size() : 0;
+		const u32 rmax = right ? right->ypoints.size() : 0;
 
 		arr.reserve(lmax + rmax);
 
