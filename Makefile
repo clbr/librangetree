@@ -1,4 +1,4 @@
-.PHONY: all clean install
+.PHONY: all clean install dist
 
 PREFIX ?= /usr
 
@@ -20,3 +20,8 @@ clean:
 install:
 	mkdir -p $(DESTDIR)/$(PREFIX)/include
 	install -m644 *.h $(DESTDIR)/$(PREFIX)/include
+
+dist:
+	VER=`git describe`; \
+	git archive --prefix librangetree-$$VER/ HEAD | pigz -9 > \
+	/tmp/librangetree-$$VER.tar.gz
