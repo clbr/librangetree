@@ -349,11 +349,11 @@ private:
 		const u32 medianidx = totalsize / 2;
 		const point median = xtmparray[medianidx].x;
 
-		start.min = 0;
+		start.min = xtmparray[0].x;
 		start.max = xtmparray[totalsize - 1].x;
 
 		// Ok, divide it between everyone
-		start.left = build(0, median);
+		start.left = build(start.min, median);
 
 		// If it's really small, it may not have a right branch..
 		if (median != start.max)
