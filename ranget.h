@@ -151,6 +151,47 @@ public:
 		return res;
 	}
 
+	// Alternative interface for faster searches, avoiding the mem alloc
+	void search(data * const arr, u32 &arrsize,
+			point xmin, point xmax, point ymin, point ymax) const {
+
+		if (!init)
+			return NULL;
+
+		// If needed, swap arguments
+		if (xmax < xmin)
+			pswap(xmax, xmin);
+		if (ymax < ymin)
+			pswap(ymax, ymin);
+
+		std::vector<const node *> list;
+		findnodes(&start, xmin, xmax, list);
+
+		const u32 ncount = list.size();
+
+		u32 cur = 0;
+		const u32 arrmax = arrsize;
+
+		for (u32 k = 0; k < ncount; k++) {
+			const node * const n = list[k];
+			const u32 max = n->ypoints.size();
+			if (!max)
+				continue;
+
+			const u32 lower = binarynext(n->ypoints, ymin);
+			const u32 upper = binarynext(n->ypoints, ymax + 1);
+
+			for (u32 i = lower; i < upper; i++) {
+					if (cur < arrmax)
+						arr[cur] = n->ypoints[i].ptr;
+
+					cur++;
+			}
+		}
+
+		arrsize = cur;
+	}
+
 	static const char *version() {
 		return "librangetree 0.1";
 	}
