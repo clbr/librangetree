@@ -43,19 +43,27 @@ Phenom II 2.8GHz, using the 1.0 version.
 These are all counting searches, since the reporting overhead depends on
 the libc implementation among other things.
 
+The timer accuracy on this computer is about 70 ns.
+
 ----
 Using 10 (10^1) points, creation took 26 us (0 ms)
 	and 1M searches took 49985 us. (0.05 us/search)
+
 Using 100 (10^2) points, creation took 49 us (0 ms)
 	and 1M searches took 73406 us. (0.07 us/search)
+
 Using 1000 (10^3) points, creation took 535 us (0 ms)
 	and 1M searches took 118294 us. (0.12 us/search)
+
 Using 10000 (10^4) points, creation took 6222 us (6 ms)
 	and 1M searches took 279652 us. (0.28 us/search)
+
 Using 100000 (10^5) points, creation took 72399 us (72 ms)
 	and 1M searches took 867422 us. (0.87 us/search)
+
 Using 1000000 (10^6) points, creation took 689253 us (689 ms)
 	and 1M searches took 1923755 us. (1.92 us/search)
+
 Using 10000000 (10^7) points, creation took 4857303 us (4857 ms)
 	and 1M searches took 3013128 us. (3.01 us/search)
 ----
@@ -65,8 +73,9 @@ sub-linearly, and the search increases logarithmically.
 
 These are much better than what was promised by the
 <<efficiency,theoretical efficiency>>.
-
-
+The reason for this is assumed to be the optimizations for the real world,
+such as for better cache usage. +
+ +
 
 Additional results are welcomed. If you'd like to submit yours, it's fairly
 easy:
