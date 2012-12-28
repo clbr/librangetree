@@ -65,8 +65,66 @@ Example usage
 ----
 #include "ranget.h"
 ...
-// Creating the tree. The first template argument is the coordinate type,
-// and the second is the type of your data.
+/* Creating the tree. The first template argument is the coordinate type,
+   and the second is the type of your data.
+
+   The coordinate type must be an integer, but how big and whether it is
+   signed is up to you.
+
+   Note that the tree stores pointers to the data, not the data itself. */
+rangetree<u32, struct topsecret> mytree;
+
+/* The tree's constructor has two optional values for memory allocation
+   guidance: rangetree(estimatedTotal, estimatedResult).
+
+   If you have advance knowledge of your dataset, giving these will speed
+   up the creation and searches a bit due to more accurate memory
+   allocation.
+
+   estimatedTotal is the total number of points the tree will include. It's
+   not a limit, but merely a guiding value.
+
+   estimatedResult is the number of points returned in an average search.
+   It only affects the search interface that returns a std::vector. */
+
+...
+
+/* Adding points. Very simple, the X coordinate, the Y coordinate, and a
+   pointer to the point's data. */
+mytree.add(0, 8, ptr);
+
+/* Once all points have been added, the tree needs to be finalized before
+   it can be searched. Points cannot be added after this. */
+mytree.finalize();
+
+...
+
+/* Searching. We have three search interfaces:
+   - counting query - how many points exist between these values
+   - search returning a std::vector
+   - search using a given array
+
+   Note that all searches are inclusive. So if you give an X range of 5-6,
+   both 5 and 6 match.
+
+   If you only need the number of points, the counting query is the
+   fastest. If you need high-performance searches, the last interface is
+   recommended, due to avoiding repeated memory allocation. */
+
+u32 numberOfPoints = mytree.count(minX, maxX, minY, maxY);
+std::vector<struct topsecret*> *myvec = mytree.search(minX, maxX, minY, maxY);
+// Note that you must delete the returned vector when you're done.
+
+u32 preallocated = 16;
+struct topsecret *array[preallocated];
+
+mytree.search(array, preallocated, minX, maxX, minY, maxY);
+/* Now array contains pointers to all the found data.
+   The given array size is updated to contain the number of found points.
+
+   If the updated number is more than the size of the array, the array
+   wasn't big enough to hold all the results. The array is filled, and the
+   remaining results are discarded. */
 ----
 
 Where do I get it?
