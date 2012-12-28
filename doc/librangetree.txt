@@ -185,7 +185,7 @@ FAQ
 What are the search and space efficiencies?::
 
 	The space usage is O(n log n), and the search efficiency is O(log^2
-	n).
+	n). The creation time is O(n log n).
 
 I hear fractional cascading enables O(log n) search?::
 
