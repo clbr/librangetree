@@ -14,6 +14,7 @@ $(prechdr): ranget.h
 clean:
 	$(MAKE) -C test clean
 	$(MAKE) -C bench clean
+	$(MAKE) -C doc clean
 	rm -f $(prechdr)
 
 install:
