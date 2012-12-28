@@ -36,12 +36,13 @@ Limits
 
 .Limits
 - Once created, it is read-only
-- The maximum dataset it can hold is 2^32 (4 billion points).
+- The maximum dataset it can hold is 2^32 (4 billion points)
 
 TIP: If you need more, consider splitting your data at a higher
 level.
 
 - Creation is not thread-safe - searches are
+- The coordinates must be integers of some size
 
 FAQ
 ---
@@ -55,7 +56,7 @@ What are the search and space efficiencies?::
 I hear fractional cascading enables O(log n) search?::
 
 	True, but it would also nearly double the RAM use. This was
-	considered too excessive.
-
+	considered too excessive. +
+	+
 	Using one million points on a 64-bit platform, the tree takes about
 	430 mb of RAM currently.
