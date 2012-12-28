@@ -362,21 +362,21 @@ private:
 
 	node *build(const point min, const point max) {
 
-		node * const n = newnode();
-
 //		if (min > max)
 //			abort();
-
-		n->min = min;
-		n->max = max;
 
 		const u32 lower = binarynextx(xtmparray, min);
 		const u32 upper = binarynextx(xtmparray, max + 1);
 
 		// Quick check: if nothing below me, no need to create anything below
 		if (lower == upper) {
-			return n;
+			return NULL;
 		}
+
+		node * const n = newnode();
+
+		n->min = min;
+		n->max = max;
 
 		// If no kids, create the array; otherwise, recurse
 		if (min == max) {
