@@ -38,7 +38,10 @@ Performance
 -----------
 
 This was measured using the included benchmark, bench/countspeed, on a
-Phenom II 2.8GHz.
+Phenom II 2.8GHz, using the 1.0 version.
+
+These are all counting searches, since the reporting overhead depends on
+the libc implementation among other things.
 
 ----
 Using 10 (10^1) points, creation took 26 us (0 ms)
@@ -57,7 +60,21 @@ Using 10000000 (10^7) points, creation took 4857303 us (4857 ms)
 	and 1M searches took 3013128 us. (3.01 us/search)
 ----
 
-Additional results are welcomed.
+From these results, it looks as if the creation time increases
+sub-linearly, and the search increases logarithmically.
+
+These are much better than what was promised by the
+<<efficiency,theoretical efficiency>>.
+
+
+
+Additional results are welcomed. If you'd like to submit yours, it's fairly
+easy:
+----
+cd bench
+make
+./countspeed | tee log
+----
 
 Example usage
 -------------
@@ -142,7 +159,7 @@ Limits
 .Limits
 - Once created, it is read-only
 - The maximum dataset it can hold is 2^32 (4 billion points)
-
++
 TIP: If you need more, consider splitting your data at a higher
 level.
 
@@ -152,6 +169,7 @@ level.
 FAQ
 ---
 
+[[efficiency]]
 [qanda]
 What are the search and space efficiencies?::
 
@@ -173,6 +191,18 @@ How is data ownership handled?::
 	+
 	Since librangetree only stores pointers, you'll need to manage your
 	data outside the tree.
-
++
 TIP: If you don't have a list of all the pointers anymore, you can get it
 by doing a search for the full range of the data type.
+
+Yay, finally!::
+
+	Tell me about it. When I discovered I needed this type of searches,
+	I found there were 40 years of papers on the structure, but no
+	code. +
+	+
+	Later on I found there was one implementation, in CGAL, but given
+	I needed it in a proprietary program, that was a no go. +
+	+
+	In case you're curious what my case was, I needed a way to list all
+	visible planets in a huge universe.
