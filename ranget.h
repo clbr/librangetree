@@ -105,12 +105,12 @@ public:
 
 		for (u32 k = 0; k < ncount; k++) {
 			const node * const n = list[k];
-			const u32 max = n->ypoints.size();
+			const u32 max = n->ycount;
 			if (!max)
 				continue;
 
-			const u32 lower = binarynext(n->ypoints, ymin);
-			const u32 upper = binarynext(n->ypoints, ymax + 1);
+			const u32 lower = binarynext(n->ypoints, n->ycount, ymin);
+			const u32 upper = binarynext(n->ypoints, n->ycount, ymax + 1);
 
 			for (u32 i = lower; i < upper; i++) {
 					sum++;
@@ -141,12 +141,12 @@ public:
 
 		for (u32 k = 0; k < ncount; k++) {
 			const node * const n = list[k];
-			const u32 max = n->ypoints.size();
+			const u32 max = n->ycount;
 			if (!max)
 				continue;
 
-			const u32 lower = binarynext(n->ypoints, ymin);
-			const u32 upper = binarynext(n->ypoints, ymax + 1);
+			const u32 lower = binarynext(n->ypoints, n->ycount, ymin);
+			const u32 upper = binarynext(n->ypoints, n->ycount, ymax + 1);
 
 			for (u32 i = lower; i < upper; i++) {
 					res->push_back(n->ypoints[i].ptr);
@@ -178,12 +178,12 @@ public:
 
 		for (u32 k = 0; k < ncount; k++) {
 			const node * const n = list[k];
-			const u32 max = n->ypoints.size();
+			const u32 max = n->ycount;
 			if (!max)
 				continue;
 
-			const u32 lower = binarynext(n->ypoints, ymin);
-			const u32 upper = binarynext(n->ypoints, ymax + 1);
+			const u32 lower = binarynext(n->ypoints, n->ycount, ymin);
+			const u32 upper = binarynext(n->ypoints, n->ycount, ymax + 1);
 
 			for (u32 i = lower; i < upper; i++) {
 					if (cur < arrmax)
@@ -262,20 +262,25 @@ private:
 		node * left;
 		node * right;
 
+		pty *ypoints;
+		u32 ycount;
+
 		point min, max;
 
-		std::vector<pty> ypoints;
+		node(): left(NULL), right(NULL), ypoints(NULL), ycount(0), min(0), max(0) {}
 
-		node(): left(NULL), right(NULL), min(0), max(0) {}
+		~node() {
+			free(ypoints);
+		}
 	};
 
 	// A binary search that returns the index if found, the next index if not
-	u32 binarynext(const std::vector<pty> &arr, const point goal) const {
+	u32 binarynext(const pty * const arr, const u32 ycount, const point goal) const {
 
-		if (arr.size() == 0)
+		if (ycount == 0)
 			return 0;
 
-		const u32 max = arr.size() - 1;
+		const u32 max = ycount - 1;
 
 		// These have to be signed to avoid overflow. s64 to contain u32.
 		s64 t, left = 0, right = max;
@@ -343,7 +348,10 @@ private:
 			return;
 		}
 
-		start.ypoints = ytmparray;
+		start.ypoints = (pty *) xcalloc(totalsize, sizeof(pty));
+		memcpy(start.ypoints, &ytmparray[0], totalsize * sizeof(pty));
+		start.ycount = totalsize;
+
 		ytmparray.clear();
 
 		const u32 medianidx = totalsize / 2;
@@ -381,12 +389,13 @@ private:
 		// If no kids, create the array; otherwise, recurse
 		if (n->min == n->max) {
 
-			n->ypoints.reserve(upper - lower);
-			n->ypoints.insert(n->ypoints.end(),
-				xtmparray.begin() + lower,
-				xtmparray.begin() + upper);
+			const u32 size = upper - lower;
 
-			std::sort(n->ypoints.begin(), n->ypoints.end());
+			n->ypoints = (pty *) xcalloc(size, sizeof(pty));
+			memcpy(n->ypoints, &xtmparray[lower], size * sizeof(pty));
+			n->ycount = size;
+
+			std::sort(n->ypoints, n->ypoints + size);
 		} else {
 			const u32 median = (min + max) / 2;
 
@@ -394,7 +403,7 @@ private:
 			n->right = build(median + 1, max);
 
 			// For faster builds, we merge our kids' arrays into ours
-			mergekids(n->ypoints, n->left, n->right);
+			mergekids(n->ypoints, n->ycount, n->left, n->right);
 		}
 
 		return n;
@@ -426,7 +435,7 @@ private:
 			return;
 		if (xmax < n->min)
 			return;
-		if (!n->ypoints.size())
+		if (!n->ycount)
 			return;
 
 		fetch(n->left);
@@ -441,31 +450,36 @@ private:
 		findnodes(n->right, xmin, xmax, list);
 	}
 
-	void mergekids(std::vector<pty> &arr, node * const __restrict__ left,
+	void mergekids(pty * &arr, u32 &ycount, node * const __restrict__ left,
 			node * const __restrict__ right) const {
 
 		u32 l, r;
-		const u32 lmax = left ? left->ypoints.size() : 0;
-		const u32 rmax = right ? right->ypoints.size() : 0;
+		const u32 lmax = left ? left->ycount : 0;
+		const u32 rmax = right ? right->ycount : 0;
 
-		arr.reserve(lmax + rmax);
+		arr = (pty *) xcalloc(lmax + rmax, sizeof(pty));
+		ycount = lmax + rmax;
+
+		u32 cur = 0;
 
 		for (l = 0, r = 0; l < lmax || r < rmax;) {
 			// Special cases first: if one array is out
 			if (l == lmax) {
-				arr.insert(arr.end(), right->ypoints.begin() + r,
-					right->ypoints.end());
+				memcpy(&arr[cur], &right->ypoints[r],
+					(rmax - r) * sizeof(pty));
 				break;
 			} else if (r == rmax) {
-				arr.insert(arr.end(), left->ypoints.begin() + l,
-					left->ypoints.end());
+				memcpy(&arr[cur], &left->ypoints[l],
+					(lmax - l) * sizeof(pty));
 				break;
 			} else {
 				if (left->ypoints[l].y <= right->ypoints[r].y) {
-					arr.push_back(left->ypoints[l]);
+					arr[cur] = left->ypoints[l];
+					cur++;
 					l++;
 				} else {
-					arr.push_back(right->ypoints[r]);
+					arr[cur] = right->ypoints[r];
+					cur++;
 					r++;
 				}
 			}
@@ -495,13 +509,13 @@ private:
 	// Yes, this leaks memory. It's a debug option anyhow.
 	char *visname(const node * const n) const {
 		char *ptr;
-		asprintf(&ptr, "%u-%u, %u points", n->min, n->max, n->ypoints.size());
+		asprintf(&ptr, "%u-%u, %u points", n->min, n->max, n->ycount);
 		return ptr;
 	}
 
 	void print(const node * const n) {
 		printf("Node: max min %u %u, %u points\n", n->max, n->min,
-			n->ypoints.size());
+			n->ycount);
 
 		if (n->left) {
 			printf("My left:\n");
