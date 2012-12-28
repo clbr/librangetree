@@ -75,10 +75,10 @@ public:
 
 		totalsize = ytmparray.size();
 
-		initpool(totalsize);
-
 		std::sort(xtmparray.begin(), xtmparray.end());
 		std::sort(ytmparray.begin(), ytmparray.end());
+
+		initpool(u32min(totalsize, xtmparray[totalsize-1].x));
 
 		build();
 
@@ -538,6 +538,13 @@ private:
 		if (n >= &pool[0] && n <= &pool[poolcount - 1])
 			return true;
 		return false;
+	}
+
+	// Misc helpers
+	u32 u32min(const u32 a, const u32 b) const {
+		if (a < b)
+			return a;
+		return b;
 	}
 
 	void pswap(point & __restrict__ a, point & __restrict__ b) const {
