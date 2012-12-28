@@ -553,6 +553,13 @@ private:
 		b = tmp;
 	}
 
+	void *xcalloc(const size_t nmemb, const size_t size) const {
+		void * const ptr = calloc(nmemb, size);
+		if (!ptr)
+			abort();
+		return ptr;
+	}
+
 	std::vector<ptx> xtmparray;
 	std::vector<pty> ytmparray;
 	u32 totalsize;
