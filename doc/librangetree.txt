@@ -160,7 +160,8 @@ Where do I get it?
 
 librangetree is open source, under the AGPLv3 license.
 
-You can download it at http://librangetree.sourceforge.net/.
+You can download it at
+https://sourceforge.net/projects/librangetree/files/latest/download.
 
 Commercial licensing is also available. Contact us for details.
 
