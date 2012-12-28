@@ -24,4 +24,5 @@ install:
 dist:
 	VER=`git describe`; \
 	git archive --prefix librangetree-$$VER/ HEAD | pigz -9 > \
-	/tmp/librangetree-$$VER.tar.gz
+	/tmp/librangetree-$$VER.tar.gz; \
+	advdefp /tmp/librangetree-$$VER.tar.gz
