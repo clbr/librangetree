@@ -31,6 +31,9 @@ In this example, we added three points to the tree:
 As can be seen, any kind of range search can be efficiently answered from
 this tree.
 
+The usual amount of points ranges from a few hundred thousand to a few
+dozen million. More than that wouldn't fit into current amounts of RAM.
+
 Performance
 -----------
 
@@ -52,6 +55,18 @@ Using 1000000 (10^6) points, creation took 689253 us (689 ms)
 	and 1M searches took 1923755 us. (1.92 us/search)
 Using 10000000 (10^7) points, creation took 4857303 us (4857 ms)
 	and 1M searches took 3013128 us. (3.01 us/search)
+----
+
+Additional results are welcomed.
+
+Example usage
+-------------
+
+----
+#include "ranget.h"
+...
+// Creating the tree. The first template argument is the coordinate type,
+// and the second is the type of your data.
 ----
 
 Where do I get it?
@@ -92,3 +107,14 @@ I hear fractional cascading enables O(log n) search?::
 	+
 	Using one million points on a 64-bit platform, the tree takes about
 	430 mb of RAM currently.
+
+How is data ownership handled?::
+
+	librangetree does not touch your data. It is never deleted or
+	freed. +
+	+
+	Since librangetree only stores pointers, you'll need to manage your
+	data outside the tree.
+
+TIP: If you don't have a list of all the pointers anymore, you can get it
+by doing a search for the full range of the data type.
