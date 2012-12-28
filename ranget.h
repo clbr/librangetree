@@ -397,10 +397,10 @@ private:
 
 			std::sort(n->ypoints, n->ypoints + size);
 		} else {
-			const u32 median = (min + max) / 2;
+			const u32 median = (n->min + n->max) / 2;
 
-			n->left = build(min, median);
-			n->right = build(median + 1, max);
+			n->left = build(n->min, median);
+			n->right = build(median + 1, n->max);
 
 			// For faster builds, we merge our kids' arrays into ours
 			mergekids(n->ypoints, n->ycount, n->left, n->right);
