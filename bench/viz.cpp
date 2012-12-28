@@ -12,6 +12,7 @@ int main() {
 	tree.finalize();
 
 	tree.visualize();
+	tree.print();
 
 	return 0;
 }

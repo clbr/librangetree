@@ -223,6 +223,10 @@ public:
 		agclose(g);
 		gvFreeContext(gvc);
 	}
+
+	void print() {
+		print(&start);
+	}
 #endif
 
 private:
@@ -493,6 +497,20 @@ private:
 		char *ptr;
 		asprintf(&ptr, "%u-%u, %u points", n->min, n->max, n->ypoints.size());
 		return ptr;
+	}
+
+	void print(const node * const n) {
+		printf("Node: max min %u %u, %u points\n", n->max, n->min,
+			n->ypoints.size());
+
+		if (n->left) {
+			printf("My left:\n");
+			print(n->left);
+		}
+		if (n->right) {
+			printf("My right:\n");
+			print(n->right);
+		}
 	}
 #endif
 
