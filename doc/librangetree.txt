@@ -1,6 +1,6 @@
 librangetree
 ============
-Lauri Kasanen <cand at gmx.com>
+Lauri Kasanen, Trance Mix Industries <trancemixtmi at gmx.com>
 
 librangetree is a C++ template, implementing a 2d range tree for both
 counting and reporting queries.
