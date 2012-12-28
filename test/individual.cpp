@@ -24,6 +24,18 @@ int main() {
 			fail("Corrupted content, expected %u, got %u\n", i, (*vec)[0]);
 
 		delete vec;
+
+		// Same with the other interface
+
+		u16 *ptrs[1];
+		u32 num = 1;
+
+		tree.search(ptrs, num, i, i, i, i);
+
+		if (num != 1)
+			fail("Size wrong, expected 1, got %u\n", num);
+		if ((u64) ptrs[0] != i)
+			fail("Corrupted content, expected %u, got %u\n", i, ptrs[0]);
 	}
 
 	return 0;
