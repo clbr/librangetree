@@ -375,11 +375,11 @@ private:
 
 		node * const n = newnode();
 
-		n->min = min;
-		n->max = max;
+		n->min = xtmparray[lower].x;
+		n->max = xtmparray[upper-1].x;
 
 		// If no kids, create the array; otherwise, recurse
-		if (min == max) {
+		if (n->min == n->max) {
 
 			n->ypoints.reserve(upper - lower);
 			n->ypoints.insert(n->ypoints.end(),
