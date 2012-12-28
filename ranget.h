@@ -152,11 +152,11 @@ public:
 	}
 
 	// Alternative interface for faster searches, avoiding the mem alloc
-	void search(data * const arr, u32 &arrsize,
+	void search(data ** const arr, u32 &arrsize,
 			point xmin, point xmax, point ymin, point ymax) const {
 
 		if (!init)
-			return NULL;
+			return;
 
 		// If needed, swap arguments
 		if (xmax < xmin)
