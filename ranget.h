@@ -59,7 +59,7 @@ public:
 		ptx px;
 		pty py;
 
-		px.x = py.x = x;
+		px.x = x;
 		px.y = py.y = y;
 		px.ptr = py.ptr = ptr;
 
@@ -245,7 +245,6 @@ private:
 		}
 	};
 	struct pty {
-		point x;
 		point y;
 		data * ptr;
 
@@ -255,7 +254,6 @@ private:
 			return true;
 		}
 		pty(const ptx &px) {
-			x = px.x;
 			y = px.y;
 			ptr = px.ptr;
 		}
@@ -395,7 +393,13 @@ private:
 			const u32 size = upper - lower;
 
 			n->ypoints = (pty *) xcalloc(size, sizeof(pty));
-			memcpy(n->ypoints, &xtmparray[lower], size * sizeof(pty));
+
+			u32 i;
+			for (i = 0; i < size; i++) {
+				n->ypoints[i].ptr = xtmparray[lower + i].ptr;
+				n->ypoints[i].y = xtmparray[lower + i].y;
+			}
+
 			n->ycount = size;
 
 			std::sort(n->ypoints, n->ypoints + size);
