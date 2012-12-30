@@ -165,6 +165,12 @@ https://sourceforge.net/projects/librangetree/files/latest/download.
 
 Commercial licensing is also available. Contact us for details.
 
+Contributing
+------------
+
+Found a bug, or have a patch? Open a ticket at
+http://sourceforge.net/p/librangetree/tickets/
+
 Limits
 ------
 
@@ -194,7 +200,14 @@ I hear fractional cascading enables O(log n) search?::
 	considered too excessive. +
 	+
 	Using one million points on a 64-bit platform, the tree takes about
-	430 mb of RAM currently.
+	430 mb of RAM currently. +
+	+
+	Talking in real-world terms, the average search would save about
+	four binary searches (in the array you're reporting from), in
+	exchange for few ten pointer hops (in arrays that aren't used
+	otherwise). As the cache effects favor the current
+	implementation, the speedup from this technique would not be as
+	big as theoretically promised.
 
 How is data ownership handled?::
 
