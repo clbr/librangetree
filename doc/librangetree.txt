@@ -200,7 +200,8 @@ I hear fractional cascading enables O(log n) search?::
 	considered too excessive. +
 	+
 	Using one million points on a 64-bit platform, the tree takes about
-	430 mb of RAM currently. +
+	430 mb of RAM currently. Pointers are a major part of that, so on
+	a 32-bit platform, the tree would use around 37% less RAM. +
 	+
 	Talking in real-world terms, the average search would save about
 	four binary searches (in the array you're reporting from), in
