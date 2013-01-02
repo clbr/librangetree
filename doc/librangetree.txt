@@ -226,3 +226,11 @@ Yay, finally!::
 	+
 	In case you're curious what my case was, I needed a way to list all
 	visible planets in a huge universe.
+
+Changelog
+---------
+
+*v1.1*::
+	- Improved the use of negative values
+	- Removed heap allocation from searches, improvement of 0-12%
+	- Documentation updates
