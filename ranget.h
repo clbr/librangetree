@@ -30,6 +30,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <math.h>
 
 #ifdef LR_VISUALIZE
 #include <gvc.h>
@@ -100,10 +101,11 @@ public:
 
 		u32 sum = 0;
 
-		std::vector<const node *> list;
-		findnodes(&start, xmin, xmax, list);
+		const node * list[maxterminals];
+		u32 listcur = 0;
+		findnodes(&start, xmin, xmax, list, listcur);
 
-		const u32 ncount = list.size();
+		const u32 ncount = listcur;
 
 		for (u32 k = 0; k < ncount; k++) {
 			const node * const n = list[k];
@@ -136,10 +138,11 @@ public:
 		std::vector<data *> * const res = new std::vector<data *>;
 		res->reserve(resultreserve);
 
-		std::vector<const node *> list;
-		findnodes(&start, xmin, xmax, list);
+		const node * list[maxterminals];
+		u32 listcur = 0;
+		findnodes(&start, xmin, xmax, list, listcur);
 
-		const u32 ncount = list.size();
+		const u32 ncount = listcur;
 
 		for (u32 k = 0; k < ncount; k++) {
 			const node * const n = list[k];
@@ -170,10 +173,11 @@ public:
 		if (ymax < ymin)
 			pswap(ymax, ymin);
 
-		std::vector<const node *> list;
-		findnodes(&start, xmin, xmax, list);
+		const node * list[maxterminals];
+		u32 listcur = 0;
+		findnodes(&start, xmin, xmax, list, listcur);
 
-		const u32 ncount = list.size();
+		const u32 ncount = listcur;
 
 		u32 cur = 0;
 		const u32 arrmax = arrsize;
@@ -435,7 +439,7 @@ private:
 	}
 
 	void findnodes(const node * const n, const point xmin, const point xmax,
-			std::vector<const node *> &list) const {
+			const node * list[], u32 &listcur) const {
 		if (!n)
 			return;
 
@@ -451,12 +455,17 @@ private:
 		fetch(n->right);
 
 		if (xmin <= n->min && xmax >= n->max) {
-			list.push_back(n);
+			list[listcur] = n;
+			listcur++;
+
+//			if (listcur >= maxterminals)
+//				abort();
+
 			return;
 		}
 
-		findnodes(n->left, xmin, xmax, list);
-		findnodes(n->right, xmin, xmax, list);
+		findnodes(n->left, xmin, xmax, list, listcur);
+		findnodes(n->right, xmin, xmax, list, listcur);
 	}
 
 	void mergekids(pty * &arr, u32 &ycount, node * const __restrict__ left,
@@ -544,6 +553,12 @@ private:
 		poolcount = amount*2;
 		poolgiven = 0;
 
+		// Given the estimated max, we can calculate the max number
+		// of terminal nodes - it's at most 2 per level (proof in the papers).
+		maxterminals = log2f(poolcount);
+		maxterminals += 1;
+		maxterminals *= 2;
+
 		pool = new node[poolcount];
 	}
 
@@ -591,6 +606,8 @@ private:
 	node *pool;
 	u32 poolcount;
 	u32 poolgiven;
+
+	u32 maxterminals;
 
 	u32 mainreserve, resultreserve;
 	bool init;
