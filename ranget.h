@@ -71,8 +71,6 @@ public:
 
 	void finalize() {
 
-		init = true;
-
 		totalsize = ytmparray.size();
 
 		std::sort(xtmparray.begin(), xtmparray.end());
@@ -83,6 +81,9 @@ public:
 		build();
 
 		xtmparray.clear();
+
+		// Must be last
+		init = true;
 	}
 
 	u32 count(point xmin, point xmax, point ymin, point ymax) const {
