@@ -76,7 +76,8 @@ public:
 		std::sort(xtmparray.begin(), xtmparray.end());
 		std::sort(ytmparray.begin(), ytmparray.end());
 
-		initpool(u32min(totalsize, xtmparray[totalsize-1].x));
+		const u32 maxrange = (xtmparray[totalsize-1].x - xtmparray[0].x) + 1;
+		initpool(u32min(totalsize, maxrange));
 
 		build();
 
