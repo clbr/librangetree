@@ -575,7 +575,8 @@ private:
 	// Yes, this leaks memory. It's a debug option anyhow.
 	char *visname(const node * const n) const {
 		char *ptr;
-		asprintf(&ptr, "%u-%u, %u points", n->min, n->max, n->ycount);
+		asprintf(&ptr, "%u-%u, %u point%s", n->min, n->max, n->ycount,
+			n->ycount > 1 ? "s" : "");
 		return ptr;
 	}
 
