@@ -446,6 +446,7 @@ private:
 		if (!n->ycount)
 			return;
 
+		// Prefetch nodes to cache
 		fetch(n->left);
 		fetch(n->right);
 
