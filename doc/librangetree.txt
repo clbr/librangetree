@@ -48,20 +48,20 @@ The timer accuracy on this computer is about 70 ns, but due to other noise,
 consider the margins of error to be 5%.
 
 ----
-Using 10 (10^1) points, creation took 40 us (0 ms)
-	and 1M searches took 56826 us. (0.06 us/search)
-Using 100 (10^2) points, creation took 49 us (0 ms)
-	and 1M searches took 81057 us. (0.08 us/search)
-Using 1000 (10^3) points, creation took 536 us (0 ms)
-	and 1M searches took 122100 us. (0.12 us/search)
-Using 10000 (10^4) points, creation took 6128 us (6 ms)
-	and 1M searches took 261714 us. (0.26 us/search)
-Using 100000 (10^5) points, creation took 71336 us (71 ms)
-	and 1M searches took 767050 us. (0.77 us/search)
-Using 1000000 (10^6) points, creation took 690253 us (690 ms)
-	and 1M searches took 1767672 us. (1.77 us/search)
-Using 10000000 (10^7) points, creation took 4904107 us (4904 ms)
-	and 1M searches took 2805826 us. (2.81 us/search)
+Using 10 (10^1) points, creation took 51 us (0 ms)
+	and 1M searches took 53957 us. (0.05 us/search)
+Using 100 (10^2) points, creation took 47 us (0 ms)
+	and 1M searches took 73045 us. (0.07 us/search)
+Using 1000 (10^3) points, creation took 496 us (0 ms)
+	and 1M searches took 116987 us. (0.12 us/search)
+Using 10000 (10^4) points, creation took 5859 us (5 ms)
+	and 1M searches took 246776 us. (0.25 us/search)
+Using 100000 (10^5) points, creation took 66627 us (66 ms)
+	and 1M searches took 727152 us. (0.73 us/search)
+Using 1000000 (10^6) points, creation took 626912 us (626 ms)
+	and 1M searches took 1636550 us. (1.64 us/search)
+Using 10000000 (10^7) points, creation took 4168000 us (4168 ms)
+	and 1M searches took 2554523 us. (2.55 us/search)
 ----
 
 From these results, it looks as if the creation time increases
@@ -194,8 +194,9 @@ I hear fractional cascading enables O(log n) search?::
 	considered too excessive. +
 	+
 	Using one million points on a 64-bit platform, the tree takes about
-	430 mb of RAM currently. Pointers are a major part of that, so on
-	a 32-bit platform, the tree would use around 37% less RAM. +
+	278 mb of RAM currently. Pointers are a major part of that, but due
+	to an optimization on 64-bit platforms, RAM use is only slightly more
+	than on 32-bit (about 11% more). +
 	+
 	Talking in real-world terms, the average search would save about
 	four binary searches (in the array you're reporting from), in
@@ -229,6 +230,16 @@ Yay, finally!::
 
 Changelog
 ---------
+
+*v1.2*::
+	- Added a memory use optimization for 64-bit platforms. +
+	+
+	This brings RAM use more in line with 32-bit platforms,
+	speeding up counting queries
+	by 0-15%. The effect on reporting speed is not known, but I estimate
+	it's slightly slower. This optimization can be disabled if desired. +
+	+
+	Before this, a tree with 1M points took 430mb. Now it takes 278mb.
 
 *v1.1*::
 	- Improved the use of negative values
