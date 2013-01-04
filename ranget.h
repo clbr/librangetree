@@ -259,11 +259,6 @@ private:
 				return false;
 			return true;
 		}
-		pty(const ptx &px) {
-			y = px.y;
-			ptr = px.ptr;
-		}
-		pty() {}
 	};
 	struct node {
 		node * left;
