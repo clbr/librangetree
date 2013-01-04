@@ -20,6 +20,17 @@
 
 #include "lrtypes.h"
 
+/* The following block ships the data away and uses an offset to access it.
+   It's only used on 64-bit platforms where 64-bit pointers are the majority
+   of the memory cost. It saves some 37% of RAM at the cost of slightly slower
+   reporting.
+
+   If you value speed over memory use, and are on a 64-bit platform, comment it out.
+*/
+#if defined(__x86_64__) || defined(_LP64)
+#define LESSRAM64
+#endif
+
 #ifdef __GNUC__
 #define fetch(a) __builtin_prefetch(a)
 #else
@@ -45,11 +56,18 @@ public:
 
 		xtmparray.reserve(mainreserve);
 		ytmparray.reserve(mainreserve);
+
+#ifdef LESSRAM64
+		dataset = NULL;
+#endif
 	}
 
 	~rangetree() {
 		nuke();
 		delete [] pool;
+#ifdef LESSRAM64
+		free(dataset);
+#endif
 	}
 
 	int add(point x, point y, data * const ptr) {
@@ -62,7 +80,12 @@ public:
 
 		px.x = x;
 		px.y = py.y = y;
-		px.ptr = py.ptr = ptr;
+		px.ptr = ptr;
+#ifndef LESSRAM64
+		py.ptr = ptr;
+#else
+		py.offset = -1;
+#endif
 
 		xtmparray.push_back(px);
 		ytmparray.push_back(py);
@@ -76,6 +99,14 @@ public:
 
 		std::sort(xtmparray.begin(), xtmparray.end());
 		std::sort(ytmparray.begin(), ytmparray.end());
+
+#ifdef LESSRAM64
+		dataset = (data **) xcalloc(totalsize, sizeof(data *));
+
+		for (u32 i = 0; i < totalsize; i++) {
+			dataset[i] = xtmparray[i].ptr;
+		}
+#endif
 
 		const u32 maxrange = (xtmparray[totalsize-1].x - xtmparray[0].x) + 1;
 		initpool(u32min(totalsize, maxrange));
@@ -154,7 +185,11 @@ public:
 			const u32 upper = binarynext(n->ypoints, n->ycount, ymax + 1);
 
 			for (u32 i = lower; i < upper; i++) {
+#ifdef LESSRAM64
+					res->push_back(dataset[n->ypoints[i].offset]);
+#else
 					res->push_back(n->ypoints[i].ptr);
+#endif
 			}
 		}
 		return res;
@@ -192,8 +227,13 @@ public:
 			const u32 upper = binarynext(n->ypoints, n->ycount, ymax + 1);
 
 			for (u32 i = lower; i < upper; i++) {
-					if (cur < arrmax)
+					if (cur < arrmax) {
+#ifdef LESSRAM64
+						arr[cur] = dataset[n->ypoints[i].offset];
+#else
 						arr[cur] = n->ypoints[i].ptr;
+#endif
+					}
 
 					cur++;
 			}
@@ -252,7 +292,11 @@ private:
 	};
 	struct pty {
 		point y;
+#ifdef LESSRAM64
+		u32 offset;
+#else
 		data * ptr;
+#endif
 
 		inline bool operator < (const pty &other) const {
 			if (y >= other.y)
@@ -349,11 +393,11 @@ private:
 			// Trees of a single point aren't supported
 			return;
 		}
-
+#ifndef LESSRAM64
 		start.ypoints = (pty *) xcalloc(totalsize, sizeof(pty));
 		memcpy(start.ypoints, &ytmparray[0], totalsize * sizeof(pty));
 		start.ycount = totalsize;
-
+#endif
 		ytmparray.clear();
 
 		const u32 medianidx = totalsize / 2;
@@ -368,6 +412,10 @@ private:
 		// If it's really small, it may not have a right branch..
 		if (median != start.max)
 			start.right = build(median + 1, start.max);
+
+#ifdef LESSRAM64
+		mergekids(start.ypoints, start.ycount, start.left, start.right);
+#endif
 	}
 
 	node *build(const point min, const point max) {
@@ -397,7 +445,11 @@ private:
 
 			u32 i;
 			for (i = 0; i < size; i++) {
+#ifdef LESSRAM64
+				n->ypoints[i].offset = lower + i;
+#else
 				n->ypoints[i].ptr = xtmparray[lower + i].ptr;
+#endif
 				n->ypoints[i].y = xtmparray[lower + i].y;
 			}
 
@@ -593,6 +645,10 @@ private:
 			abort();
 		return ptr;
 	}
+
+#ifdef LESSRAM64
+	data **dataset;
+#endif
 
 	std::vector<ptx> xtmparray;
 	std::vector<pty> ytmparray;
