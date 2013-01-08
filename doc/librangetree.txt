@@ -38,7 +38,7 @@ Performance
 -----------
 
 This was measured using the included benchmark, bench/countspeed, on a
-Phenom II 2.8GHz, using the 1.0 version.
+Phenom II 2.8GHz, using the latest released version.
 
 These are all counting searches, since the reporting overhead depends on
 the libc implementation among other things. +
