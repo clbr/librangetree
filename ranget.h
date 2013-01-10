@@ -147,9 +147,7 @@ public:
 			const u32 lower = binarynext(n->ypoints, n->ycount, ymin);
 			const u32 upper = binarynext(n->ypoints, n->ycount, ymax + 1);
 
-			for (u32 i = lower; i < upper; i++) {
-					sum++;
-			}
+			sum += upper - lower;
 		}
 
 		return sum;
