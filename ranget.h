@@ -51,7 +51,7 @@ template <class point, class data> class rangetree {
 
 public:
 	rangetree(u32 estimatedTotal = 1000, u32 estimatedResult = 100):
-		pool(NULL),
+		nodepool(NULL),
 		mainreserve(estimatedTotal), resultreserve(estimatedResult), init(false) {
 
 		xtmparray.reserve(mainreserve);
@@ -64,7 +64,7 @@ public:
 
 	~rangetree() {
 		nuke();
-		delete [] pool;
+		delete [] nodepool;
 #ifdef LESSRAM64
 		free(dataset);
 #endif
@@ -109,7 +109,7 @@ public:
 #endif
 
 		const u32 maxrange = (xtmparray[totalsize-1].x - xtmparray[0].x) + 1;
-		initpool(u32min(totalsize, maxrange));
+		initnodepool(u32min(totalsize, maxrange));
 
 		build();
 
@@ -479,7 +479,7 @@ private:
 		nuke(n->left);
 		nuke(n->right);
 
-		if (!ispooled(n))
+		if (!isnodepooled(n))
 			delete n;
 	}
 
@@ -595,32 +595,32 @@ private:
 
 	// A memory pool for nodes, to save on the housekeeping overhead,
 	// and hopefully gain a bit in cache advantages.
-	void initpool(const u32 amount) {
+	void initnodepool(const u32 amount) {
 		// If we have N points, the likely amount of nodes is 2N - 1.
-		poolcount = amount*2;
-		poolgiven = 0;
+		nodepoolcount = amount*2;
+		nodepoolgiven = 0;
 
 		// Given the estimated max, we can calculate the max number
 		// of terminal nodes - it's at most 2 per level (proof in the papers).
-		maxterminals = log2f(poolcount);
+		maxterminals = log2f(nodepoolcount);
 		maxterminals += 1;
 		maxterminals *= 2;
 
-		pool = new node[poolcount];
+		nodepool = new node[nodepoolcount];
 	}
 
 	node * newnode() {
-		if (poolgiven < poolcount) {
-			node * const out = &pool[poolgiven];
-			poolgiven++;
+		if (nodepoolgiven < nodepoolcount) {
+			node * const out = &nodepool[nodepoolgiven];
+			nodepoolgiven++;
 			return out;
 		} else {
 			return new node;
 		}
 	}
 
-	bool ispooled(const node * const n) const {
-		if (n >= &pool[0] && n <= &pool[poolcount - 1])
+	bool isnodepooled(const node * const n) const {
+		if (n >= &nodepool[0] && n <= &nodepool[nodepoolcount - 1])
 			return true;
 		return false;
 	}
@@ -654,9 +654,9 @@ private:
 	u32 totalsize;
 
 	node start;
-	node *pool;
-	u32 poolcount;
-	u32 poolgiven;
+	node *nodepool;
+	u32 nodepoolcount;
+	u32 nodepoolgiven;
 
 	u32 maxterminals;
 
