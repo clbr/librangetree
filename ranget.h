@@ -51,7 +51,7 @@ template <class point, class data> class rangetree {
 
 public:
 	rangetree(u32 estimatedTotal = 1000, u32 estimatedResult = 100):
-		nodepool(NULL),
+		nodepool(NULL), ptypool(NULL),
 		mainreserve(estimatedTotal), resultreserve(estimatedResult), init(false) {
 
 		xtmparray.reserve(mainreserve);
@@ -65,6 +65,7 @@ public:
 	~rangetree() {
 		nuke();
 		delete [] nodepool;
+		free(ptypool);
 #ifdef LESSRAM64
 		free(dataset);
 #endif
@@ -108,8 +109,8 @@ public:
 		}
 #endif
 
-		const u32 maxrange = (xtmparray[totalsize-1].x - xtmparray[0].x) + 1;
-		initpools(u32min(totalsize, maxrange));
+		const point maxrange = (xtmparray[totalsize-1].x - xtmparray[0].x) + 1;
+		initpools(totalsize, maxrange);
 
 		build();
 
@@ -312,10 +313,6 @@ private:
 		point min, max;
 
 		node(): left(NULL), right(NULL), ypoints(NULL), ycount(0), min(0), max(0) {}
-
-		~node() {
-			free(ypoints);
-		}
 	};
 
 	// A binary search that returns the index if found, the next index if not
@@ -439,7 +436,7 @@ private:
 
 			const u32 size = upper - lower;
 
-			n->ypoints = (pty *) xcalloc(size, sizeof(pty));
+			n->ypoints = newpty(size);
 
 			u32 i;
 			for (i = 0; i < size; i++) {
@@ -470,6 +467,9 @@ private:
 	void nuke() {
 		nuke(start.left);
 		nuke(start.right);
+
+		if (!isptypooled(start.ypoints))
+			free(start.ypoints);
 	}
 
 	void nuke(node * const n) {
@@ -478,6 +478,9 @@ private:
 
 		nuke(n->left);
 		nuke(n->right);
+
+		if (!isptypooled(n->ypoints))
+			free(n->ypoints);
 
 		if (!isnodepooled(n))
 			delete n;
@@ -521,7 +524,7 @@ private:
 		const u32 lmax = left ? left->ycount : 0;
 		const u32 rmax = right ? right->ycount : 0;
 
-		arr = (pty *) xcalloc(lmax + rmax, sizeof(pty));
+		arr = newpty(lmax + rmax);
 		ycount = lmax + rmax;
 
 		u32 cur = 0;
@@ -595,18 +598,27 @@ private:
 
 	// A memory pool for nodes, to save on the housekeeping overhead,
 	// and hopefully gain a bit in cache advantages.
-	void initpools(const u32 amount) {
+	void initpools(const u32 totalcount, const point maxrange) {
+
+		const u32 amount = u32min(totalcount, maxrange);
+
 		// If we have N points, the likely amount of nodes is 2N - 1.
 		nodepoolcount = amount*2;
 		nodepoolgiven = 0;
 
+		const u32 log2ed = log2f(nodepoolcount) + 1;
+
+		// Pre-allocate n*log(n) ptys
+		ptypoolcount = totalcount * log2ed;
+		ptypoolgiven = 0;
+
 		// Given the estimated max, we can calculate the max number
 		// of terminal nodes - it's at most 2 per level (proof in the papers).
-		maxterminals = log2f(nodepoolcount);
-		maxterminals += 1;
+		maxterminals = log2ed;
 		maxterminals *= 2;
 
 		nodepool = new node[nodepoolcount];
+		ptypool = (pty *) xcalloc(ptypoolcount, sizeof(pty));
 	}
 
 	node * newnode() {
@@ -619,8 +631,24 @@ private:
 		}
 	}
 
+	pty * newpty(const u32 num) const {
+		if (ptypoolgiven + num <= ptypoolcount) {
+			pty * const out = &ptypool[ptypoolgiven];
+			ptypoolgiven += num;
+			return out;
+		} else {
+			return (pty *) xcalloc(num, sizeof(pty));
+		}
+	}
+
 	bool isnodepooled(const node * const n) const {
 		if (n >= &nodepool[0] && n <= &nodepool[nodepoolcount - 1])
+			return true;
+		return false;
+	}
+
+	bool isptypooled(const pty * const p) const {
+		if (p >= &ptypool[0] && p <= &ptypool[ptypoolcount - 1])
 			return true;
 		return false;
 	}
@@ -654,9 +682,14 @@ private:
 	u32 totalsize;
 
 	node start;
+
 	node *nodepool;
 	u32 nodepoolcount;
 	u32 nodepoolgiven;
+
+	pty *ptypool;
+	u32 ptypoolcount;
+	mutable u32 ptypoolgiven;
 
 	u32 maxterminals;
 
