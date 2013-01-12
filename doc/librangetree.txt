@@ -48,20 +48,20 @@ The timer accuracy on this computer is about 70 ns, but due to other noise,
 consider the margins of error to be 5%.
 
 ----
-Using 10 (10^1) points, creation took 51 us (0 ms)
-	and 1M searches took 53957 us. (0.05 us/search)
-Using 100 (10^2) points, creation took 47 us (0 ms)
-	and 1M searches took 73045 us. (0.07 us/search)
-Using 1000 (10^3) points, creation took 496 us (0 ms)
-	and 1M searches took 116987 us. (0.12 us/search)
-Using 10000 (10^4) points, creation took 5859 us (5 ms)
-	and 1M searches took 246776 us. (0.25 us/search)
-Using 100000 (10^5) points, creation took 66627 us (66 ms)
-	and 1M searches took 727152 us. (0.73 us/search)
-Using 1000000 (10^6) points, creation took 626912 us (626 ms)
-	and 1M searches took 1636550 us. (1.64 us/search)
-Using 10000000 (10^7) points, creation took 4168000 us (4168 ms)
-	and 1M searches took 2554523 us. (2.55 us/search)
+Using 10 (10^1) points, creation took 37 us (0 ms)
+	and 1M searches took 51179 us. (0.05 us/search)
+Using 100 (10^2) points, creation took 38 us (0 ms)
+	and 1M searches took 77785 us. (0.08 us/search)
+Using 1000 (10^3) points, creation took 427 us (0 ms)
+	and 1M searches took 116971 us. (0.12 us/search)
+Using 10000 (10^4) points, creation took 4963 us (4 ms)
+	and 1M searches took 241700 us. (0.24 us/search)
+Using 100000 (10^5) points, creation took 55503 us (55 ms)
+	and 1M searches took 660244 us. (0.66 us/search)
+Using 1000000 (10^6) points, creation took 534722 us (534 ms)
+	and 1M searches took 1493930 us. (1.49 us/search)
+Using 10000000 (10^7) points, creation took 3735129 us (3735 ms)
+	and 1M searches took 2286166 us. (2.29 us/search)
 ----
 
 From these results, it looks as if the creation time increases
