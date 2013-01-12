@@ -109,7 +109,7 @@ public:
 #endif
 
 		const u32 maxrange = (xtmparray[totalsize-1].x - xtmparray[0].x) + 1;
-		initnodepool(u32min(totalsize, maxrange));
+		initpools(u32min(totalsize, maxrange));
 
 		build();
 
@@ -595,7 +595,7 @@ private:
 
 	// A memory pool for nodes, to save on the housekeeping overhead,
 	// and hopefully gain a bit in cache advantages.
-	void initnodepool(const u32 amount) {
+	void initpools(const u32 amount) {
 		// If we have N points, the likely amount of nodes is 2N - 1.
 		nodepoolcount = amount*2;
 		nodepoolgiven = 0;
