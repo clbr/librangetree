@@ -197,7 +197,7 @@ I hear fractional cascading enables O(log n) search?::
 	considered too excessive. +
 	+
 	Using one million points on a 64-bit platform, the tree takes about
-	278 mb of RAM currently. Pointers are a major part of that, but due
+	267 mb of RAM currently. Pointers are a major part of that, but due
 	to an optimization on 64-bit platforms, RAM use is only slightly more
 	than on 32-bit (about 11% more). +
 	+
@@ -233,6 +233,13 @@ Yay, finally!::
 
 Changelog
 ---------
+
+*v1.3*::
+	- Added a memory pool for ptys. 0-17% speedup in creation,
+	0-10% speedup in searches. +
+	+
+	This drops RAM use by about 4%. For 1M points, the tree now takes
+	267mb instead of 278mb.
 
 *v1.2*::
 	- Added a memory use optimization for 64-bit platforms. +
