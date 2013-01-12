@@ -242,7 +242,7 @@ public:
 	}
 
 	static const char *version() {
-		return "librangetree 1.2";
+		return "librangetree 1.3";
 	}
 
 #ifdef LR_VISUALIZE
