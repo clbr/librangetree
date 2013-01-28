@@ -84,6 +84,7 @@ make
 Example usage
 -------------
 
+[source,cpp]
 ----
 #include "ranget.h"
 ...
