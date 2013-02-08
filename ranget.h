@@ -641,12 +641,20 @@ private:
 	}
 
 	bool isnodepooled(const node * const n) const {
+
+		if (!nodepool)
+			return false;
+
 		if (n >= &nodepool[0] && n <= &nodepool[nodepoolcount - 1])
 			return true;
 		return false;
 	}
 
 	bool isptypooled(const pty * const p) const {
+
+		if (!ptypool)
+			return false;
+
 		if (p >= &ptypool[0] && p <= &ptypool[ptypoolcount - 1])
 			return true;
 		return false;
