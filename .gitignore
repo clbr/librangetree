@@ -12,6 +12,7 @@ test/individual
 test/identica
 test/mem-too-little
 test/signed
+test/single
 
 bench/countspeed
 bench/scaling
