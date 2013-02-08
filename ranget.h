@@ -384,8 +384,7 @@ private:
 	}
 
 	void build() {
-		if (totalsize < 2) {
-			// Trees of a single point aren't supported
+		if (totalsize < 1) {
 			return;
 		}
 #ifndef LESSRAM64
