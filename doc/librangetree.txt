@@ -235,6 +235,10 @@ Yay, finally!::
 Changelog
 ---------
 
+*v1.3.1*::
+	- Removed the arbitrary limit on having at least two points. Trees
+	of a single point can now be created.
+
 *v1.3*::
 	- Added a memory pool for ptys. 0-17% speedup in creation,
 	0-10% speedup in searches. +
